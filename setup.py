@@ -6,7 +6,7 @@
 #
 # This file is part of pyutil; see README.rst for licensing terms.
 
-import os, re, sys
+import os, io, re, sys
 
 from setuptools import find_packages, setup
 
@@ -23,6 +23,10 @@ trove_classifiers=[
     u"Programming Language :: Python",
     u"Programming Language :: Python :: 2",
     u"Programming Language :: Python :: 2.7",
+    u"Programming Language :: Python :: 3",
+    u"Programming Language :: Python :: 3.5",
+    u"Programming Language :: Python :: 3.6",
+    u"Programming Language :: Python :: 3.7",
     u"Topic :: Utilities",
     u"Topic :: Software Development :: Libraries",
     ]
@@ -31,6 +35,7 @@ PKG=u'pyutil'
 VERSIONFILE = os.path.join(PKG, u"_version.py")
 
 import versioneer
+versioneer.versionfile_source = VERSIONFILE
 versioneer.versionfile_build = VERSIONFILE
 versioneer.tag_prefix = PKG+u'-' # tags are like pyutil-1.2.0
 versioneer.parentdir_prefix = PKG+u'-' # dirname like 'myproject-1.2.0'
@@ -51,16 +56,13 @@ install_requires = [
     u'simplejson >= 2.1.0',
 ]
 
-readmetext_bytes = open(u'README.rst').read()
-readmetext_unicode = readmetext_bytes.decode('utf-8')
-while readmetext_unicode[0] == u'\ufeff':
-    readmetext_unicode = readmetext_unicode[1:]
+readmetext = io.open(u'README.rst').read()
 
 setup(name=PKG,
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       description=u'a collection of utilities for Python programmers',
-      long_description=readmetext_unicode,
+      long_description=readmetext,
       author=u"tpltnt",
       author_email=u'tpltnt+pyutil@il38.nbkawtg.net',
       url=u'https://github.com/tpltnt/pyutil' + PKG,
