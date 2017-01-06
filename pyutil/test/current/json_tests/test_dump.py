@@ -1,7 +1,10 @@
 ﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
 from unittest import TestCase
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from pyutil import jsonutil as json
 

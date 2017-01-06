@@ -3,8 +3,12 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
-import exceptions, os
-from repr import Repr
+import os
+
+try:
+    from reprlib import Repr
+except ImportError:
+    from repr import Repr
 
 class BetterRepr(Repr):
     def __init__(self):
@@ -31,7 +35,7 @@ class BetterRepr(Repr):
             return '<' + obj.im_class.__name__ + '.' + obj.im_func.__name__ + '() at (builtin)'
 
     def repr_long(self, obj, level):
-        s = `obj` # XXX Hope this isn't too slow...
+        s = repr(obj) # XXX Hope this isn't too slow...
         if len(s) > self.maxlong:
             i = max(0, (self.maxlong-3)/2)
             j = max(0, self.maxlong-3-i)
@@ -48,7 +52,7 @@ class BetterRepr(Repr):
         on it.  If it is an instance of list call self.repr_list() on it. Else
         call Repr.repr_instance().
         """
-        if isinstance(obj, exceptions.Exception):
+        if isinstance(obj, Exception):
             # Don't cut down exception strings so much.
             tms = self.maxstring
             self.maxstring = max(512, tms * 4)

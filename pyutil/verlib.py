@@ -7,6 +7,11 @@ discussion at PyCon 2009.
 
 import re
 
+try:
+    unicode = unicode
+except NameError:
+    basestring = (str, bytes)
+
 class IrrationalVersionError(Exception):
     """This is an irrational version."""
     pass

@@ -4,6 +4,11 @@ from unittest import TestCase
 
 from pyutil import jsonutil as json
 
+try:
+    unichr = unichr
+except NameError:
+    unichr = chr
+
 class TestUnicode(TestCase):
     def test_encoding1(self):
         encoder = json.JSONEncoder(encoding='utf-8')

@@ -10,7 +10,7 @@ import os
 from pyutil import fileutil
 
 class FileUtil(unittest.TestCase):
-    def mkdir(self, basedir, path, mode=0777):
+    def mkdir(self, basedir, path, mode=0o777):
         fn = os.path.join(basedir, path)
         fileutil.make_dirs(fn, mode)
 
@@ -35,4 +35,3 @@ class FileUtil(unittest.TestCase):
 
         used = fileutil.du(basedir)
         self.failUnlessEqual(10+11+12+13, used)
-
