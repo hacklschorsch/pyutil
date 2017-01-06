@@ -7,8 +7,8 @@
 import exceptions, gc, math, operator, os, sys, types
 
 # from the pyutil library
-from assertutil import precondition
-import mathutil
+from .assertutil import precondition
+import .mathutil
 
 class Canary:
     """

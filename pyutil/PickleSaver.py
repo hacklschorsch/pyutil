@@ -14,9 +14,9 @@ import cPickle as pickle
 import warnings
 
 # from the pyutil library
-import fileutil
-import nummedobj
-import twistedutil
+import .fileutil
+import .nummedobj
+import .twistedutil
 
 # from the Twisted library
 from twisted.python import log

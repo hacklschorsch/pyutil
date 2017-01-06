@@ -13,8 +13,8 @@ consume all of your RAM while trying to decompress it.
 
 import exceptions, string, zlib
 
-from humanreadable import hr
-from pyutil.assertutil import precondition
+from .humanreadable import hr
+from .assertutil import precondition
 
 class DecompressError(exceptions.StandardError, zlib.error): pass
 class UnsafeDecompressError(DecompressError): pass # This means it would take more memory to decompress than we can spare.

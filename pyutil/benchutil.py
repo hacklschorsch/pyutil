@@ -101,7 +101,7 @@ if 'windows' in platform.system().lower():
 else:
     clock = time.time
 
-from assertutil import _assert
+from .assertutil import _assert
 
 def makeg(func):
     def blah(n, func=func):

@@ -5,7 +5,7 @@ import os, signal, time
 from twisted.internet import defer, reactor
 from twisted.trial import unittest
 
-import repeatable_random
+from . import repeatable_random
 repeatable_random # http://divmod.org/trac/ticket/1499
 
 class SignalMixin:

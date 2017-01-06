@@ -17,8 +17,8 @@ self._assert_invariants()
 
 import operator
 
-from assertutil import _assert, precondition
-from humanreadable import hr
+from .assertutil import _assert, precondition
+from .humanreadable import hr
 
 class OrderedDict:
     """

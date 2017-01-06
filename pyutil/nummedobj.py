@@ -3,7 +3,7 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
-import dictutil
+import .dictutil
 
 class NummedObj(object):
     """
