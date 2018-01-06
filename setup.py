@@ -31,7 +31,6 @@ PKG=u'pyutil'
 VERSIONFILE = os.path.join(PKG, u"_version.py")
 
 import versioneer
-versioneer.versionfile_source = VERSIONFILE
 versioneer.versionfile_build = VERSIONFILE
 versioneer.tag_prefix = PKG+u'-' # tags are like pyutil-1.2.0
 versioneer.parentdir_prefix = PKG+u'-' # dirname like 'myproject-1.2.0'

@@ -3,3 +3,4 @@ include MANIFEST.in
 include versioneer.py
 
 graft pyutil
+include pyutil/_version.py
