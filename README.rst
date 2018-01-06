@@ -3,9 +3,9 @@
 pyutil -- a library of useful Python functions and classes
 ==========================================================
 
-Many of these utilities (or their ancestors) were developed for the Mojo
-Nation, Mnet, Allmydata.com "Mountain View", Tahoe-LAFS, or SimpleGeo's
-products.
+Many of these utilities (or their ancestors) were developed originally
+by Zooko Wilcox-O'Hearn for the Mojo Nation, Mnet, Allmydata.com "Mountain View",
+Tahoe-LAFS, or SimpleGeo's products.
 
 
 utilities
