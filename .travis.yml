@@ -1,0 +1,13 @@
+dist: trusty
+language: python
+cache: pip
+python:
+  - "2.7"
+os:
+  - "linux"
+
+install:
+  - pip install twisted setuptools_trial simplejson
+
+script:
+  - python ./setup.py trial -s pyutil.test
