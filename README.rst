@@ -101,7 +101,8 @@ tests and benchmarks
 ====================
 
 Testing requires these dependencies: ``twisted``, ``setuptools_trial``,
-and ``simplejson``.
+and ``simplejson``. You can install them by running:
+``pip install twisted setuptools_trial simplejson``.
 
 To run tests: ``python ./setup.py trial -s pyutil.test.current``.
 
