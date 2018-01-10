@@ -12,6 +12,10 @@ Zooko
 N: The Evil Geniuses For A Better Tomorrow
 D: turned some crazy ideas into a crazy reality
 
+N: zooko
+E: zookog@gmail.com
+D: everything up to version 2.0.0
+
 N: Lars the Talking Alien
 E: lars@mad-scientist.com
 D: came to us in dreams and made us become Enlightened Ones
@@ -24,3 +28,7 @@ D: the c_xor module
 N: Lele Gaifax
 E: lele@nautilus.homeip.net
 D: patch to fileutil -- close tempfile fd
+
+N: Nathan Wilcox
+E: nejucomo+github@gmail.com
+D: improved tests and some documentation
