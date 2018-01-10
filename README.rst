@@ -90,7 +90,7 @@ https://pypi.python.org/pypi/pyutil
 source code (git)
 =================
 
-https://github.com/zooko/pyutil
+https://github.com/tpltnt/pyutil
 
 issue tracker
 =============
@@ -99,6 +99,9 @@ https://tahoe-lafs.org/trac/pyutil
 
 tests and benchmarks
 ====================
+
+Testing requires these dependencies: ``twisted``, ``setuptools_trial``,
+and ``simplejson``.
 
 To run tests: ``python ./setup.py trial -s pyutil.test.current``.
 
@@ -125,6 +128,20 @@ pyutil.test import test_cache; test_cache.slow_bench()'``
 (The "-O" is important when benchmarking, since cache has extensive
 self-tests that are optimized out when -O is included.)
 
+testing with virtualenv
+-----------------------
+
+You can install all testing tools and test-time dependencies in a local
+`virtualenv` which avoids interference with user- or system-wide python
+packages. Here's an example of this process (command output omitted):
+
+.. code:: bash
+
+    $ git clone 'https://github.com/tpltnt/pyutil'
+    $ cd pyutil/
+    $ virtualenv ./venv
+    $ ./venv/bin/pip install twisted setuptools_trial simplejson
+    $ ./venv/bin/python ./setup.py trial -s pyutil.test
 
 LICENCE
 =======
