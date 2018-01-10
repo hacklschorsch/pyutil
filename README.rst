@@ -7,6 +7,8 @@ Many of these utilities (or their ancestors) were developed originally
 by Zooko Wilcox-O'Hearn for the Mojo Nation, Mnet, Allmydata.com "Mountain View",
 Tahoe-LAFS, or SimpleGeo's products.
 
+.. image:: https://travis-ci.org/tpltnt/pyutil.svg?branch=master
+   :target: https://travis-ci.org/tpltnt/pyutil
 
 utilities
 =========
