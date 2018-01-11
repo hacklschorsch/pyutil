@@ -98,7 +98,7 @@ https://github.com/tpltnt/pyutil
 issue tracker
 =============
 
-https://tahoe-lafs.org/trac/pyutil
+https://github.com/tpltnt/pyutil/issues
 
 tests and benchmarks
 ====================
