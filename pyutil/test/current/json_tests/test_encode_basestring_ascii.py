@@ -1,5 +1,7 @@
 ﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
+
+import sys
 from twisted.trial.unittest import SkipTest, TestCase
 
 from pyutil.jsonutil import encoder
@@ -13,9 +15,9 @@ CASES = [
     (u' s p a c e d ', '" s p a c e d "'),
     (u'\U0001d120', '"\\ud834\\udd20"'),
     (u'\u03b1\u03a9', '"\\u03b1\\u03a9"'),
-    ('\xce\xb1\xce\xa9', '"\\u03b1\\u03a9"'),
+    (b'\xce\xb1\xce\xa9', '"\\u03b1\\u03a9"'),
     (u'\u03b1\u03a9', '"\\u03b1\\u03a9"'),
-    ('\xce\xb1\xce\xa9', '"\\u03b1\\u03a9"'),
+    (b'\xce\xb1\xce\xa9', '"\\u03b1\\u03a9"'),
     (u'\u03b1\u03a9', '"\\u03b1\\u03a9"'),
     (u'\u03b1\u03a9', '"\\u03b1\\u03a9"'),
     (u"`1~!@#$%^&*()_+-={':[,]}|;.</>?", '"`1~!@#$%^&*()_+-={\':[,]}|;.</>?"'),

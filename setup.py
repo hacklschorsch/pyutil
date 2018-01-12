@@ -6,7 +6,9 @@
 #
 # This file is part of pyutil; see README.rst for licensing terms.
 
-import os, re, sys
+import os, io, re, sys
+
+import versioneer
 
 from setuptools import find_packages, setup
 
@@ -23,17 +25,15 @@ trove_classifiers=[
     u"Programming Language :: Python",
     u"Programming Language :: Python :: 2",
     u"Programming Language :: Python :: 2.7",
+    u"Programming Language :: Python :: 3",
+    u"Programming Language :: Python :: 3.5",
+    u"Programming Language :: Python :: 3.6",
+    u"Programming Language :: Python :: 3.7",
     u"Topic :: Utilities",
     u"Topic :: Software Development :: Libraries",
     ]
 
 PKG=u'pyutil'
-VERSIONFILE = os.path.join(PKG, u"_version.py")
-
-import versioneer
-versioneer.versionfile_build = VERSIONFILE
-versioneer.tag_prefix = PKG+u'-' # tags are like pyutil-1.2.0
-versioneer.parentdir_prefix = PKG+u'-' # dirname like 'myproject-1.2.0'
 
 doc_fnames=[ u'COPYING.SPL.txt', u'COPYING.GPL', u'COPYING.TGPPL.rst', u'README.rst', u'CREDITS' ]
 
@@ -46,21 +46,13 @@ data_files = [
     (os.path.join(u'pyutil', u'data'), [os.path.join(u'pyutil', u'data', u'wordlist.txt')])
     ]
 
-install_requires = [
-    u'zbase32 >= 1.0',
-    u'simplejson >= 2.1.0',
-]
-
-readmetext_bytes = open(u'README.rst').read()
-readmetext_unicode = readmetext_bytes.decode('utf-8')
-while readmetext_unicode[0] == u'\ufeff':
-    readmetext_unicode = readmetext_unicode[1:]
+readmetext = io.open(u'README.rst').read()
 
 setup(name=PKG,
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       description=u'a collection of utilities for Python programmers',
-      long_description=readmetext_unicode,
+      long_description=readmetext,
       author=u"tpltnt",
       author_email=u'tpltnt+pyutil@il38.nbkawtg.net',
       url=u'https://github.com/tpltnt/pyutil' + PKG,
@@ -68,8 +60,11 @@ setup(name=PKG,
       packages=find_packages(),
       include_package_data=True,
       data_files=data_files,
-      extras_require={u'jsonutil': [u'simplejson >= 2.1.0',]},
-      install_requires=install_requires,
+      install_requires=[],
+      extras_require={
+          u'jsonutil': [u'simplejson >= 2.1.0',],
+          u'randcookie': [u'zbase32 >= 1.0',],
+          },
       tests_require=[
           u'twisted >= 15.5.0',  # for trial (eg user: test_observer)
           u'mock >= 1.3.0',

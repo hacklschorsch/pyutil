@@ -9,11 +9,9 @@ extended version number class
 
 # verlib a.k.a. distutils.version by Tarek Ziadé.
 from pyutil.verlib import NormalizedVersion
-def cmp_version(v1, v2):
-    return cmp(NormalizedVersion(str(v1)), NormalizedVersion(str(v2)))
 
 # Python Standard Library
-import re
+import functools, re
 
 # End users see version strings like this:
 
@@ -86,6 +84,7 @@ VERSION_SUFFIX_RE_STR="(-(\d+|r\d+)|.post\d+)?"
 VERSION_RE_STR=VERSION_BASE_RE_STR + VERSION_SUFFIX_RE_STR
 VERSION_RE=re.compile("^" + VERSION_RE_STR + "$")
 
+@functools.total_ordering
 class Version(object):
     def __init__(self, vstring=None):
         self.major = None
@@ -98,14 +97,14 @@ class Version(object):
         if vstring:
             try:
                 self.parse(vstring)
-            except ValueError, le:
+            except ValueError as le:
                 le.args = tuple(le.args + ('vstring:', vstring,))
                 raise
 
     def parse(self, vstring):
         mo = VERSION_RE.search(vstring)
         if not mo:
-            raise ValueError, "Not a valid version string for pyutil.version_class.Version(): %r" % (vstring,)
+            raise ValueError("Not a valid version string for pyutil.version_class.Version(): %r" % (vstring,))
 
         self.major = int(mo.group(1))
         self.minor = mo.group(3) and int(mo.group(3)) or 0
@@ -146,4 +145,10 @@ class Version(object):
         return self.__str__()
 
     def __cmp__ (self, other):
-        return cmp_version(self, other)
+        return cmp(NormalizedVersion(str(self)), NormalizedVersion(str(other)))
+
+    def __eq__ (self, other):
+        return NormalizedVersion(str(self)) == NormalizedVersion(str(other))
+
+    def __lt__ (self, other):
+        return NormalizedVersion(str(self)) < NormalizedVersion(str(other))

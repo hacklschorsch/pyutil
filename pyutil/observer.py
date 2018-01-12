@@ -23,13 +23,12 @@ class OneShotObserverList:
         self._fired = False
         self._result = None
         self._watchers = []
-        self.__repr__ = self._unfired_repr
 
-    def _unfired_repr(self):
-        return "<OneShotObserverList [%s]>" % (self._watchers, )
-
-    def _fired_repr(self):
-        return "<OneShotObserverList -> %s>" % (self._result, )
+    def __repr__(self):
+        if self._fired:
+            return "<OneShotObserverList -> %s>" % (self._result, )
+        else:
+            return "<OneShotObserverList [%s]>" % (self._watchers, )
 
     def _get_result(self):
         return self._result
@@ -51,7 +50,6 @@ class OneShotObserverList:
         for w in self._watchers:
             eventually(w.callback, result)
         del self._watchers
-        self.__repr__ = self._fired_repr
 
     def fire_if_not_fired(self, result):
         if not self._fired:

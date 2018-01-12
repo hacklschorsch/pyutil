@@ -9,7 +9,7 @@ import warnings
 from weakref import ref
 
 # from the pyutil library
-from assertutil import precondition
+from .assertutil import precondition
 
 class WeakMethod:
     """ Wraps a function or, more importantly, a bound method, in

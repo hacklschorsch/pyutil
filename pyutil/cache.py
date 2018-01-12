@@ -15,8 +15,8 @@ and minutes for a large cache.  Turn on -O, or comment out ``assert self._assert
 
 import operator
 
-from assertutil import _assert, precondition
-from humanreadable import hr
+from .assertutil import _assert, precondition
+from .humanreadable import hr
 
 class LRUCache:
     """

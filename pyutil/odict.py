@@ -17,8 +17,8 @@ self._assert_invariants()
 
 import operator
 
-from assertutil import _assert, precondition
-from humanreadable import hr
+from .assertutil import _assert, precondition
+from .humanreadable import hr
 
 class OrderedDict:
     """
@@ -143,7 +143,7 @@ class OrderedDict:
 
         if not self.d.has_key(k):
             if strictkey:
-                raise KeyError, k
+                raise KeyError(k)
             return
 
         node = self.d[k]
@@ -178,7 +178,7 @@ class OrderedDict:
         node = self.d.get(key)
         if not node:
             if strictkey:
-                raise KeyError, key
+                raise KeyError(key)
             return default
         return node[0]
 
@@ -221,7 +221,7 @@ class OrderedDict:
             return node[0]
         elif strictkey:
             assert self._assert_invariants()
-            raise KeyError, key
+            raise KeyError(key)
         else:
             assert self._assert_invariants()
             return default
@@ -256,7 +256,7 @@ class OrderedDict:
     def pop(self):
         assert self._assert_invariants()
         if len(self.d) < 2: # the +2 is for the sentinels
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self.d[self.hs][2]
         self.remove(k)
         assert self._assert_invariants()
@@ -265,7 +265,7 @@ class OrderedDict:
     def popitem(self):
         assert self._assert_invariants()
         if len(self.d) < 2: # the +2 is for the sentinels
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self.d[self.hs][2]
         val = self.remove(k)
         assert self._assert_invariants()
@@ -475,7 +475,7 @@ class SmallOrderedDict(dict):
             return val
         elif strictkey:
             assert self._assert_invariants()
-            raise KeyError, key
+            raise KeyError(key)
         else:
             assert self._assert_invariants()
             return default
@@ -542,14 +542,14 @@ class SmallOrderedDict(dict):
         assert self._assert_invariants()
         if not dict.has_key(self, key):
             if strictkey:
-                raise KeyError, key
+                raise KeyError(key)
             return
         self._lru.remove(key)
         self._lru.append(key)
 
     def popitem(self):
         if not self._lru:
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self._lru[-1]
         obj = self.remove(k)
         return (k, obj,)

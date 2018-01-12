@@ -1,11 +1,14 @@
 ﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
+
+from __future__ import print_function
+
 import os, signal, time
 
 from twisted.internet import defer, reactor
 from twisted.trial import unittest
 
-import repeatable_random
+from . import repeatable_random
 repeatable_random # http://divmod.org/trac/ticket/1499
 
 class SignalMixin:
@@ -99,7 +102,7 @@ class TestMixin(SignalMixin):
             if p.active():
                 p.cancel()
             else:
-                print "WEIRDNESS! pending timed call not active!"
+                print("WEIRDNESS! pending timed call not active!")
         if required_to_quiesce and active:
             self.fail("Reactor was still active when it was required to be quiescent.")
 
