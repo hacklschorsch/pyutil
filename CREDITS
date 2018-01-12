@@ -32,3 +32,6 @@ D: patch to fileutil -- close tempfile fd
 N: Nathan Wilcox
 E: nejucomo+github@gmail.com
 D: improved tests and some documentation
+
+N: George Hopkins
+D: Python 3 support
