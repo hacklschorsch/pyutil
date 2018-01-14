@@ -16,7 +16,7 @@ def move(k, d1, d2, strict=False):
     """
     warnings.warn("deprecated", DeprecationWarning)
     if strict and not d1.has_key(k):
-        raise KeyError, k
+        raise KeyError(k)
 
     d2[k] = d1[k]
     del d1[k]
@@ -95,7 +95,7 @@ class UtilDict:
     def __cmp__(self, other):
         try:
             return self.d.__cmp__(other)
-        except TypeError, le:
+        except TypeError as le:
             # maybe we should look for a .d member in other.  I know this is insanely kludgey, but the Right Way To Do It is for dict.__cmp__ to use structural typing ("duck typing")
             try:
                 return self.d.__cmp__(other.d)
@@ -265,7 +265,7 @@ class NumDict:
     def __cmp__(self, other):
         try:
             return self.d.__cmp__(other)
-        except TypeError, le:
+        except TypeError as le:
             # maybe we should look for a .d member in other.  I know this is insanely kludgey, but the Right Way To Do It is for dict.__cmp__ to use structural typing ("duck typing")
             try:
                 return self.d.__cmp__(other.d)
@@ -375,7 +375,7 @@ class ValueOrderedDict:
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
             precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
-                raise StopIteration
+                raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return (le[1], le[0],)
@@ -402,7 +402,7 @@ class ValueOrderedDict:
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
             precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
-                raise StopIteration
+                raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return le[1]
@@ -420,7 +420,7 @@ class ValueOrderedDict:
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
             precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
-                raise StopIteration
+                raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return le[0]
@@ -536,7 +536,7 @@ class ValueOrderedDict:
     def __getitem__(self, key, default=None, strictkey=True):
         if not self.d.has_key(key):
             if strictkey:
-                raise KeyError, key
+                raise KeyError(key)
             else:
                 return default
         return self.d[key]
@@ -563,7 +563,7 @@ class ValueOrderedDict:
             return val
         elif strictkey:
             assert self._assert_invariants()
-            raise KeyError, key
+            raise KeyError(key)
         else:
             assert self._assert_invariants()
             return default
@@ -590,7 +590,7 @@ class ValueOrderedDict:
 
     def popitem(self):
         if not self.l:
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         le = self.l.pop(0)
         del self.d[le[1]]
         return (le[1], le[0],)
@@ -598,7 +598,7 @@ class ValueOrderedDict:
     def pop(self, k, default=None, strictkey=False):
         if not self.d.has_key(k):
             if strictkey:
-                raise KeyError, k
+                raise KeyError(k)
             else:
                 return default
         v = self.d.pop(k)

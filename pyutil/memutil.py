@@ -214,12 +214,12 @@ def get_mem_used():
     try:
         import resource
     except ImportError:
-        raise NotSupportedException
+        raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
     a = os.popen("cat /proc/%s/statm 2>/dev/null" % os.getpid()).read().split()
     if not a:
-        raise NotSupportedException
+        raise NotSupportedException()
     return (int(a[1]) * resource.getpagesize(), int(a[0]) * resource.getpagesize(),)
 
 def get_mem_used_res():
@@ -230,12 +230,12 @@ def get_mem_used_res():
     try:
         import resource
     except ImportError:
-        raise NotSupportedException
+        raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
     a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()
     if not len(a) > 1:
-        raise NotSupportedException
+        raise NotSupportedException()
     return int(a[1]) * resource.getpagesize()
 
 def get_mem_usage_virt_and_res():
@@ -246,12 +246,12 @@ def get_mem_usage_virt_and_res():
     try:
         import resource
     except ImportError:
-        raise NotSupportedException
+        raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
     a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()
     if not len(a) > 1:
-        raise NotSupportedException
+        raise NotSupportedException()
     return (int(a[0]) * resource.getpagesize(), int(a[1]) * resource.getpagesize(),)
 
 class Measurer(object):

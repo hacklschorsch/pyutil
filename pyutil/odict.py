@@ -38,7 +38,7 @@ class OrderedDict:
             return self
         def next(self):
             if self.i is self.c.hs:
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             precondition(self.c.d.has_key(k), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
@@ -53,7 +53,7 @@ class OrderedDict:
             return self
         def next(self):
             if self.i is self.c.hs:
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             precondition(self.c.d.has_key(k), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
@@ -68,7 +68,7 @@ class OrderedDict:
             return self
         def next(self):
             if self.i is self.c.hs:
-                raise StopIteration
+                raise StopIteration()
             precondition(self.c.d.has_key(self.i), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
             (v, p, n,) = self.c.d[self.i]
             self.i = p
@@ -369,7 +369,7 @@ class SmallOrderedDict(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return (k, dict.__getitem__(self.c, k),)
@@ -384,7 +384,7 @@ class SmallOrderedDict(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return k
@@ -399,7 +399,7 @@ class SmallOrderedDict(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return dict.__getitem__(self.c, k)

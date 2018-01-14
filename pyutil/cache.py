@@ -44,7 +44,7 @@ class LRUCache:
             return self
         def next(self):
             if self.i is self.c.ts:
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             precondition(self.c.d.has_key(k), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
@@ -59,7 +59,7 @@ class LRUCache:
             return self
         def next(self):
             if self.i is self.c.ts:
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             precondition(self.c.d.has_key(k), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
@@ -74,7 +74,7 @@ class LRUCache:
             return self
         def next(self):
             if self.i is self.c.ts:
-                raise StopIteration
+                raise StopIteration()
             precondition(self.c.d.has_key(self.i), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
             (v, p, n,) = self.c.d[self.i]
             self.i = n
@@ -152,7 +152,7 @@ class LRUCache:
 
         if not self.d.has_key(k):
             if strictkey:
-                raise KeyError, k
+                raise KeyError(k)
             return
 
         node = self.d[k]
@@ -187,7 +187,7 @@ class LRUCache:
         node = self.d.get(key)
         if not node:
             if strictkey:
-                raise KeyError, key
+                raise KeyError(key)
             return default
         self.freshen(key)
         return node[0]
@@ -237,7 +237,7 @@ class LRUCache:
             return node[0]
         elif strictkey:
             assert self._assert_invariants()
-            raise KeyError, key
+            raise KeyError(key)
         else:
             assert self._assert_invariants()
             return default
@@ -290,7 +290,7 @@ class LRUCache:
     def pop(self):
         assert self._assert_invariants()
         if len(self.d) < 2: # the +2 is for the sentinels
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self.d[self.ts][1]
         self.remove(k)
         assert self._assert_invariants()
@@ -299,7 +299,7 @@ class LRUCache:
     def popitem(self):
         assert self._assert_invariants()
         if len(self.d) < 2: # the +2 is for the sentinels
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self.d[self.ts][1]
         val = self.remove(k)
         assert self._assert_invariants()
@@ -403,7 +403,7 @@ class SmallLRUCache(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return (k, dict.__getitem__(self.c, k),)
@@ -418,7 +418,7 @@ class SmallLRUCache(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return k
@@ -433,7 +433,7 @@ class SmallLRUCache(dict):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
             precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
-                raise StopIteration
+                raise StopIteration()
             k = self.i
             self.i += 1
             return dict.__getitem__(self.c, k)
@@ -509,7 +509,7 @@ class SmallLRUCache(dict):
             return val
         elif strictkey:
             assert self._assert_invariants()
-            raise KeyError, key
+            raise KeyError(key)
         else:
             assert self._assert_invariants()
             return default
@@ -576,14 +576,14 @@ class SmallLRUCache(dict):
         assert self._assert_invariants()
         if not dict.has_key(self, key):
             if strictkey:
-                raise KeyError, key
+                raise KeyError(key)
             return
         self._lru.remove(key)
         self._lru.append(key)
 
     def popitem(self):
         if not self._lru:
-            raise KeyError, 'popitem(): dictionary is empty'
+            raise KeyError('popitem(): dictionary is empty')
         k = self._lru[-1]
         obj = self.remove(k)
         return (k, obj,)
@@ -657,7 +657,7 @@ class LinkedListLRUCache:
         return a[1]
     def get(self, key, default=None, strictkey=False):
         if not self.has_key(key) and strictkey:
-            raise KeyError, key
+            raise KeyError(key)
         if self.has_key(key):
             return self.__getitem__(key)
         else:
@@ -700,7 +700,7 @@ class LinkedListLRUCache:
             del self.d[obj]
             return val.me[1]
         elif strictkey:
-            raise KeyError, obj
+            raise KeyError(obj)
         else:
             return default
     def remove(self, obj, default=None, strictkey=True):

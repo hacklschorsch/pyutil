@@ -10,7 +10,7 @@ import pkg_resources
 
 def main():
     if len(sys.argv) <= 1:
-        raise UsageError, "USAGE: verinfo DISTRIBUTIONNAME [PACKAGENAME]"
+        raise UsageError("USAGE: verinfo DISTRIBUTIONNAME [PACKAGENAME]")
     DISTNAME=sys.argv[1]
     if len(sys.argv) >= 3:
         PACKNAME=sys.argv[2]
