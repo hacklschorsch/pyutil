@@ -4,12 +4,13 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
+from __future__ import print_function
 import os
 
 try:
     from twisted.trial import unittest
 except ImportError as le:
-    print "Skipping %s since it requires Twisted and Twisted could not be imported: %s" % (__name__, le,)
+    print("Skipping %s since it requires Twisted and Twisted could not be imported: %s" % (__name__, le,))
 else:
     from pyutil import PickleSaver, fileutil
 

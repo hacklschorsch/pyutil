@@ -4,9 +4,10 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
+from __future__ import print_function
 import binascii, codecs, encodings, locale, os, sys, zlib
-
 import argparse
+
 
 def listcodecs(dir):
     names = []
@@ -85,16 +86,16 @@ def main():
                 if args.target:
                     if args.target != u:
                         continue
-                print "%19s" % codec,
-                print ':',
-                print u.encode(output_encoding)
+                print("%19s" % codec)
+                print(':')
+                print(u.encode(output_encoding))
             else:
                 if not args.accept_bytes:
                     continue
-                print "%19s" % codec,
-                print "!!! ",
-                print ':',
-                print u
+                print("%19s" % codec)
+                print("!!! ")
+                print(':')
+                print(u)
 
 if __name__ == "__main__":
     main()

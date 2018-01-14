@@ -89,6 +89,8 @@ and the main function is to make them be methods of the same object, e.g.:
  this work and send me a patch!
 """
 
+from __future__ import print_function
+
 import cProfile, operator, time
 from decimal import Decimal as D
 import thread
@@ -198,7 +200,7 @@ def rep_bench(func, n, runtime=None, initfunc=None, runreps=None, runiters=10, p
         }
 
     if not quiet:
-        print "best: %(best)#8.03e, %(mp1)3dth-best: %(mth-best)#8.03e, mean: %(mean)#8.03e, %(mp1)3dth-worst: %(mth-worst)#8.03e, worst: %(worst)#8.03e (of %(num)6d)" % res
+        print("best: %(best)#8.03e, %(mp1)3dth-best: %(mth-best)#8.03e, mean: %(mean)#8.03e, %(mp1)3dth-worst: %(mth-worst)#8.03e, worst: %(worst)#8.03e (of %(num)6d)" % res)
 
     return res
 
@@ -280,7 +282,7 @@ def bench(func, initfunc=None, runtime=1.0, TOPXP=21, profile=False, profresults
 
     res = {}
     for BSIZE in BSIZES:
-        print "N: %7d," % BSIZE,
+        print("N: %7d," % BSIZE)
         r = rep_bench(func, BSIZE, initfunc=initfunc, runtime=runtime, profile=profile, profresults=profresults, UNITS_PER_SECOND=UNITS_PER_SECOND)
         res[BSIZE] = r
 
@@ -290,5 +292,5 @@ def bench(func, initfunc=None, runtime=1.0, TOPXP=21, profile=False, profresults
     return res
 
 def print_bench_footer(UNITS_PER_SECOND=1):
-    print "all results are in time units per N"
-    print "time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, D(1)/UNITS_PER_SECOND)
+    print("all results are in time units per N")
+    print("time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, D(1)/UNITS_PER_SECOND))

@@ -3,6 +3,8 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
+from __future__ import print_function
+
 # from the Python Standard Library
 import exceptions, gc, math, operator, os, sys, types
 
@@ -18,7 +20,7 @@ class Canary:
         self.ownerdesc = repr(owner)
 
     def __del__(self):
-        print "Canary says that %s is gone." % self.ownerdesc
+        print("Canary says that %s is gone." % self.ownerdesc)
 
 def estimate_mem_of_obj(o):
     # assumes 32-bit CPUs...
@@ -339,7 +341,7 @@ def measure_mem_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
         resiters[i] = totaliters
         gc.collect()
         resmemusage[i] = get_mem_used_res()
-        # print "totaliters: %s, numobjs: %s" % (resiters[-1], resmemusage[-1],)
+        # print("totaliters: %s, numobjs: %s" % (resiters[-1], resmemusage[-1],))
 
     avex = float(reduce(operator.__add__, resiters)) / len(resiters)
     avey = float(reduce(operator.__add__, resmemusage)) / len(resmemusage)

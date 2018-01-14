@@ -3,7 +3,7 @@
 # -*- indent-tabs-mode: nil -*-
 
 #  This file is part of pyutil; see README.rst for licensing terms.
-
+from __future__ import print_function
 import random, unittest
 
 from pyutil.humanreadable import hr
@@ -12,7 +12,7 @@ from pyutil import odict
 
 class Bencher:
     def __init__(self, klass, MAXREPS=2**8, MAXTIME=5):
-        print klass
+        print(klass)
         self.klass = klass
         self.MAXREPS = MAXREPS
         self.MAXTIME = MAXTIME
@@ -77,7 +77,7 @@ class Bencher:
             if len(func) > max:
                 max = len(func)
         for func in funcs:
-            print func + " " * (max + 1 - len(func))
+            print(func + " " * (max + 1 - len(func)))
             for BSIZE in BSIZES:
                 f = getattr(self, func)
                 benchutil.rep_bench(f, BSIZE, self._generic_benchmarking_init, MAXREPS=self.MAXREPS, MAXTIME=self.MAXTIME)
@@ -393,7 +393,7 @@ class Testy(unittest.TestCase):
         try:
             self._test_mem_leakage()
         except memutil.NotSupportedException:
-            print "Skipping memory leak test since measurement of current mem usage isn't implemented on this platform."
+            print("Skipping memory leak test since measurement of current mem usage isn't implemented on this platform.")
             pass
     del test_mem_leakage # This test takes too long.
 
@@ -408,7 +408,7 @@ class Testy(unittest.TestCase):
         try:
             self._test_mem_leakage_much_adding_some_removing()
         except memutil.NotSupportedException:
-            print "Skipping memory leak test since measurement of current mem usage isn't implemented on this platform."
+            print("Skipping memory leak test since measurement of current mem usage isn't implemented on this platform.")
             pass
     del test_mem_leakage_much_adding_some_removing # This test takes too long.
 

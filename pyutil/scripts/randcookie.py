@@ -4,8 +4,8 @@
 
 #  This file is part of pyutil; see README.rst for licensing terms.
 
+from __future__ import print_function
 import os, sys
-
 import zbase32
 
 def main():
@@ -27,7 +27,7 @@ def main():
         chs = 7-chs
         i += chs
 
-    print s
+    print(s)
 
 if __name__ == '__main__':
     main()
