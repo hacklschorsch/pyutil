@@ -136,14 +136,14 @@ class PickleSaver(nummedobj.NummedObj):
                 if not hasattr(self, attrname):
                     log.msg("WARNING: %s has no attribute named %s on load from disk, value: %s." % (self, attrname, attrval,))
                 setattr(self, attrname, attrval)
-        except (pickle.UnpicklingError, IOError, EOFError,), le:
+        except (pickle.UnpicklingError, IOError, EOFError,) as le:
             try:
                 attrdict = pickle.loads(open(self._extres.fname + ".tmp", "rb").read())
                 for attrname, attrval in attrdict.items():
                     if not hasattr(self, attrname):
                         log.msg("WARNING: %s has no attribute named %s on load from disk, value: %s." % (self, attrname, attrval,))
                     setattr(self, attrname, attrval)
-            except (pickle.UnpicklingError, IOError, EOFError,), le2:
+            except (pickle.UnpicklingError, IOError, EOFError,) as le2:
                 log.msg("Got exception attempting to load attrs.  (This is normal if this is the first time you've used this persistent %s object.)  fname: %s, le: %s, le2: %s" % (self.__class__, self._extres.fname, le, le2,))
 
         self.lazy_save()

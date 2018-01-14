@@ -174,7 +174,7 @@ def measure_ref_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
 
     try:
         sys.gettotalrefcount()
-    except AttributeError, le:
+    except AttributeError as le:
         raise AttributeError(le, "Probably this is not a debug build of Python, so it doesn't have a sys.gettotalrefcount function.")
     resiters = [None]*numsamples # values: iters
     resnumrefs = [None]*numsamples # values: numrefs

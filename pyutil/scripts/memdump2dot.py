@@ -24,7 +24,7 @@ def parse_netstring(l, i):
         # skip the comma
         assert l[j+1+lenval] == ","
         return (val, j+1+lenval+1,)
-    except Exception, le:
+    except Exception as le:
         le.args = tuple(le.args + (l, i,))
         raise
 
