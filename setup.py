@@ -46,7 +46,7 @@ data_files = [
     (os.path.join(u'pyutil', u'data'), [os.path.join(u'pyutil', u'data', u'wordlist.txt')])
     ]
 
-readmetext = io.open(u'README.rst').read()
+readmetext = io.open(u'README.rst', encoding='utf-8').read()
 
 setup(name=PKG,
       version=versioneer.get_version(),
