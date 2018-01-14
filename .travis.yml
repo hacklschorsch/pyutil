@@ -13,3 +13,4 @@ install:
 
 script:
   - python ./setup.py trial -s pyutil.test.current
+  - python setup.py install
