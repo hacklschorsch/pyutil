@@ -217,7 +217,7 @@ def get_mem_used():
         raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
-    a = os.popen("cat /proc/%s/statm 2>/dev/null" % os.getpid()).read().split()
+    a = os.popen("cat /proc/%s/statm 2>/dev/null" % os.getpid()).read().split()  #nosec
     if not a:
         raise NotSupportedException()
     return (int(a[1]) * resource.getpagesize(), int(a[0]) * resource.getpagesize(),)
@@ -233,7 +233,7 @@ def get_mem_used_res():
         raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
-    a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()
+    a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()  #nosec
     if not len(a) > 1:
         raise NotSupportedException()
     return int(a[1]) * resource.getpagesize()
@@ -249,7 +249,7 @@ def get_mem_usage_virt_and_res():
         raise NotSupportedException()
     # sample output from cat /proc/$PID/statm:
     # 14317 3092 832 279 0 2108 0
-    a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()
+    a = os.popen("cat /proc/%s/statm" % os.getpid()).read().split()  #nosec
     if not len(a) > 1:
         raise NotSupportedException()
     return (int(a[0]) * resource.getpagesize(), int(a[1]) * resource.getpagesize(),)
