@@ -34,4 +34,4 @@ class FileUtil(unittest.TestCase):
         self.touch(d, "a/c/2.txt", data="d"*13)
 
         used = fileutil.du(basedir)
-        self.failUnlessEqual(10+11+12+13, used)
+        self.assertEqual(10+11+12+13, used)

@@ -16,18 +16,18 @@ class Observer(unittest.TestCase):
     def test_oneshot(self):
         ol = observer.OneShotObserverList()
         rep = repr(ol)
-        self.failUnlessEqual(rep, "<OneShotObserverList [[]]>")
+        self.assertEqual(rep, "<OneShotObserverList [[]]>")
         d1 = ol.when_fired()
         d2 = ol.when_fired()
         def _addmore(res):
-            self.failUnlessEqual(res, "result")
+            self.assertEqual(res, "result")
             d3 = ol.when_fired()
-            d3.addCallback(self.failUnlessEqual, "result")
+            d3.addCallback(self.assertEqual, "result")
             return d3
         d1.addCallback(_addmore)
         ol.fire("result")
         rep = repr(ol)
-        self.failUnlessEqual(rep, "<OneShotObserverList -> result>")
+        self.assertEqual(rep, "<OneShotObserverList -> result>")
         d4 = ol.when_fired()
         dl = defer.DeferredList([d1,d2,d4])
         return dl
@@ -36,10 +36,10 @@ class Observer(unittest.TestCase):
         ol = observer.OneShotObserverList()
         d = ol.when_fired()
         def _addmore(res):
-            self.failUnlessEqual(res, "result")
+            self.assertEqual(res, "result")
             ol.fire_if_not_fired("result3") # should be ignored
             d2 = ol.when_fired()
-            d2.addCallback(self.failUnlessEqual, "result")
+            d2.addCallback(self.assertEqual, "result")
             return d2
         d.addCallback(_addmore)
         ol.fire_if_not_fired("result")
@@ -51,9 +51,9 @@ class Observer(unittest.TestCase):
         d1 = ol.when_fired()
         d2 = ol.when_fired()
         def _addmore(res):
-            self.failUnlessEqual(res, "result")
+            self.assertEqual(res, "result")
             d3 = ol.when_fired()
-            d3.addCallback(self.failUnlessEqual, "result")
+            d3.addCallback(self.assertEqual, "result")
             return d3
         d1.addCallback(_addmore)
         def _get_result():
@@ -75,8 +75,8 @@ class Observer(unittest.TestCase):
         ol.unsubscribe(l1.append)
         ol.notify(3)
         def _check(res):
-            self.failUnlessEqual(l1, [1,2])
-            self.failUnlessEqual(l2, [2,3])
+            self.assertEqual(l1, [1,2])
+            self.assertEqual(l2, [2,3])
         d = nextTurn()
         d.addCallback(_check)
         def _step2(res):
@@ -87,7 +87,7 @@ class Observer(unittest.TestCase):
             ol.notify(4, 5, c=6)
             return nextTurn()
         def _check2(res):
-            self.failUnlessEqual(l3, [(4,5,6)])
+            self.assertEqual(l3, [(4,5,6)])
         d.addCallback(_step2)
         d.addCallback(_check2)
         return d

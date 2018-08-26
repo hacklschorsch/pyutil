@@ -122,7 +122,7 @@ class Testy(unittest.TestCase):
         self.failUnless(d.get("spam2") == "eggs2")
         self.failUnless(d["spam"] == "eggs")
         self.failUnless(d["spam2"] == "eggs2")
-        self.failUnlessEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")], d)
+        self.assertEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")], d)
 
     def _test_move_to_most_recent(self, d) :
         d.insert("spam", "eggs")
@@ -131,39 +131,39 @@ class Testy(unittest.TestCase):
         self.failUnless(d.get("spam2") == "eggs2")
         self.failUnless(d["spam"] == "eggs")
         self.failUnless(d["spam2"] == "eggs2")
-        self.failUnlessEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")])
+        self.assertEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")])
         d.move_to_most_recent("spam")
-        self.failUnlessEqual(d.items(), [("spam2", "eggs2"), ("spam", "eggs")])
+        self.assertEqual(d.items(), [("spam2", "eggs2"), ("spam", "eggs")])
 
     def _test_insert_and_remove(self, d):
         d.insert('spam', "eggs")
         self.failUnless(d.has_key('spam'))
         self.failUnless(d.get('spam') == "eggs")
         self.failUnless(d['spam'] == "eggs")
-        self.failUnlessEqual(d.items(), [("spam", "eggs")])
+        self.assertEqual(d.items(), [("spam", "eggs")])
         x = d.remove('spam')
         self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertEqual(d.items(), [])
         d['spam'] = "eggsy"
         self.failUnless(d.has_key('spam'))
         self.failUnless(d.get('spam') == "eggsy")
         self.failUnless(d['spam'] == "eggsy")
-        self.failUnlessEqual(d.items(), [("spam", "eggsy")])
+        self.assertEqual(d.items(), [("spam", "eggsy")])
         del d['spam']
         self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertEqual(d.items(), [])
 
     def _test_setdefault(self, d):
         d.setdefault('spam', "eggs")
         self.failUnless(d.has_key('spam'))
         self.failUnless(d.get('spam') == "eggs")
         self.failUnless(d['spam'] == "eggs")
-        self.failUnlessEqual(d.items(), [("spam", "eggs")])
+        self.assertEqual(d.items(), [("spam", "eggs")])
         x = d.remove('spam')
         self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertEqual(d.items(), [])
 
     def _test_extracted_bound_method(self, d):
         insmeth = d.insert
@@ -187,7 +187,7 @@ class Testy(unittest.TestCase):
         d.clear()
         d._assert_invariants()
         self.failUnless(len(d) == 0)
-        self.failUnlessEqual(d.items(), [])
+        self.assertEqual(d.items(), [])
 
     def _test_update_from_dict(self, d):
         self.failUnless(d._assert_invariants())
@@ -219,38 +219,38 @@ class Testy(unittest.TestCase):
         self.failUnless(d._assert_invariants())
         self.failUnless(d.get('c') == 2)
         self.failUnless(d._assert_invariants())
-        self.failUnlessEqual(d.items(), [("b", 1), ("a", 0), ("c", 2)])
+        self.assertEqual(d.items(), [("b", 1), ("a", 0), ("c", 2)])
 
     def _test_popitem(self, C):
         c = C({"a": 1})
         res = c.popitem()
-        self.failUnlessEqual(res, ("a", 1,))
+        self.assertEqual(res, ("a", 1,))
 
         c["a"] = 1
         c["b"] = 2
 
         res = c.popitem()
-        self.failUnlessEqual(res, ("b", 2,))
+        self.assertEqual(res, ("b", 2,))
 
     def _test_pop(self, C):
         c = C({"a": 1})
         res = c.pop()
-        self.failUnlessEqual(res, "a")
+        self.assertEqual(res, "a")
 
         c["a"] = 1
         c["b"] = 2
 
         res = c.pop()
-        self.failUnlessEqual(res, "b")
+        self.assertEqual(res, "b")
 
     def _test_iterate_items(self, C):
         c = C({"a": 1})
         c["b"] = 2
         i = c.iteritems()
         x = i.next()
-        self.failUnlessEqual(x, ("a", 1,))
+        self.assertEqual(x, ("a", 1,))
         x = i.next()
-        self.failUnlessEqual(x, ("b", 2,))
+        self.assertEqual(x, ("b", 2,))
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -262,9 +262,9 @@ class Testy(unittest.TestCase):
         c["b"] = 2
         i = c.iterkeys()
         x = i.next()
-        self.failUnlessEqual(x, "a")
+        self.assertEqual(x, "a")
         x = i.next()
-        self.failUnlessEqual(x, "b")
+        self.assertEqual(x, "b")
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -294,7 +294,7 @@ class Testy(unittest.TestCase):
                 del c[k]
         for i in range(MUCHADDINGSIZE):
             c[i] = i
-        self.failUnlessEqual(len(c), MUCHADDINGSIZE)
+        self.assertEqual(len(c), MUCHADDINGSIZE)
 
     def _test_1(self, C):
         c = C()
@@ -358,7 +358,7 @@ class Testy(unittest.TestCase):
         c._assert_invariants()
 
         x = c.pop()
-        self.failUnlessEqual(x, 10)
+        self.assertEqual(x, 10)
 
         c[99] = 99
         c._assert_invariants()
