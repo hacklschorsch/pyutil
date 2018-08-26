@@ -355,7 +355,7 @@ def measure_mem_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
         return None
     return sxy / sxx
 
-def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodType, InstanceType=types.InstanceType):
+def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodType):
     """
     For human analysis, when humans are attempting to understand where all the
     memory is going.  Argument o is an object, return value is a string
@@ -370,11 +370,6 @@ def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodT
     elif isinstance(o, MethodType):
         try:
             sl.append("<type 'method' %s>" % str(o.im_func.func_name))
-        except:
-            pass
-    elif isinstance(o, InstanceType):
-        try:
-            sl.append("<type 'instance' %s>" % str(o.__class__.__name__))
         except:
             pass
     else:
