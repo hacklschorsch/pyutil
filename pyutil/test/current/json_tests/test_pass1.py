@@ -70,4 +70,4 @@ class TestPass1(TestCase):
         res = json.loads(JSON)
         out = json.dumps(res)
         self.assertEqual(res, json.loads(out))
-        self.failUnless("2.3456789012E+676" in json.dumps(res, allow_nan=False))
+        self.assertTrue("2.3456789012E+676" in json.dumps(res, allow_nan=False))

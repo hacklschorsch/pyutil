@@ -32,6 +32,6 @@ else:
 
             fname = os.path.join(tempdir.name, "picklesavertest")
             self._test_save_now(fname)
-            self.failUnless(os.path.isfile(fname), "The file [%s] does not exist." %(fname,))
+            self.assertTrue(os.path.isfile(fname), "The file [%s] does not exist." %(fname,))
 
             tempdir.shutdown()

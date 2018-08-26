@@ -37,16 +37,16 @@ class ZlibTestCase(unittest.TestCase):
         s = genstring(strlen)
         cs = zlibutil.zlib.compress(s)
         s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**6 + zlibutil.MINMAXMEM)
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
 
     def _help_test_inplace_minmaxmem(self, genstring, decomp, strlen):
         s = genstring(strlen)
         cs = zlibutil.zlib.compress(s)
         s2 = decomp(cs, maxlen=strlen, maxmem=zlibutil.MINMAXMEM)
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=zlibutil.MINMAXMEM)
 
     def _help_test_inplace(self, genstring, decomp, strlen):
@@ -54,13 +54,13 @@ class ZlibTestCase(unittest.TestCase):
         s = genstring(strlen)
         cs = zlibutil.zlib.compress(s)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**6, zlibutil.MINMAXMEM))
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen-1, zlibutil.MINMAXMEM))
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen/2, zlibutil.MINMAXMEM))
-        self.failUnless(s == s2)
+        self.assertTrue(s == s2)
         self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
 
     def testem(self):

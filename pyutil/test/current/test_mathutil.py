@@ -46,7 +46,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.assertEqual(f(5, 3), 2)
         self.assertEqual(f(6, 3), 2)
         self.assertEqual(f(7, 3), 3)
-        self.failUnless(isinstance(f(0.0, 1), int))
+        self.assertTrue(isinstance(f(0.0, 1), int))
         self.assertEqual(f(7.0, 3.0), 3)
         self.assertEqual(f(7, 3.0), 3)
         self.assertEqual(f(7.0, 3), 3)
@@ -95,12 +95,12 @@ class MathUtilTestCase(unittest.TestCase):
         f = mathutil.is_power_of_k
         for i in range(1, 100):
             if i in (1, 2, 4, 8, 16, 32, 64):
-                self.failUnless(f(i, 2), "but %d *is* a power of 2" % i)
+                self.assertTrue(f(i, 2), "but %d *is* a power of 2" % i)
             else:
                 self.assertFalse(f(i, 2), "but %d is *not* a power of 2" % i)
         for i in range(1, 100):
             if i in (1, 3, 9, 27, 81):
-                self.failUnless(f(i, 3), "but %d *is* a power of 3" % i)
+                self.assertTrue(f(i, 3), "but %d *is* a power of 3" % i)
             else:
                 self.assertFalse(f(i, 3), "but %d is *not* a power of 3" % i)
 
