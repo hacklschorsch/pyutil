@@ -11,10 +11,10 @@ V = version_class.Version
 
 class T(unittest.TestCase):
     def test_rc_regex_rejects_rc_suffix(self):
-        self.failUnlessRaises(ValueError, V, '9.9.9rc9')
+        self.assertRaises(ValueError, V, '9.9.9rc9')
 
     def test_rc_regex_rejects_trailing_garbage(self):
-        self.failUnlessRaises(ValueError, V, '9.9.9c9HEYTHISISNTRIGHT')
+        self.assertRaises(ValueError, V, '9.9.9c9HEYTHISISNTRIGHT')
 
     def test_comparisons(self):
         self.failUnless(V('1.0') < V('1.1'))

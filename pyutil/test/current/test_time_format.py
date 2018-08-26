@@ -90,7 +90,7 @@ class TimeUtilTestCase(unittest.TestCase):
             return 1.0
         self.assertEqual(time_format.iso_utc(t=my_time),
                              "1970-01-01 00:00:01Z")
-        self.failUnlessRaises(ValueError,
+        self.assertRaises(ValueError,
                                   time_format.iso_utc_time_to_seconds,
                                   "invalid timestring")
         s = time_format.iso_utc_time_to_seconds("1970-01-01 00:00:01.500Z")

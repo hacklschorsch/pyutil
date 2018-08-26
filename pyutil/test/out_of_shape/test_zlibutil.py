@@ -40,17 +40,17 @@ class ZlibTestCase(unittest.TestCase):
         self.failUnless(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**6 + zlibutil.MINMAXMEM)
         self.failUnless(s == s2)
-        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
+        self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
 
     def _help_test_inplace_minmaxmem(self, genstring, decomp, strlen):
         s = genstring(strlen)
         cs = zlibutil.zlib.compress(s)
         s2 = decomp(cs, maxlen=strlen, maxmem=zlibutil.MINMAXMEM)
         self.failUnless(s == s2)
-        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=zlibutil.MINMAXMEM)
+        self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=zlibutil.MINMAXMEM)
 
     def _help_test_inplace(self, genstring, decomp, strlen):
-        # ### XXX self.failUnlessRaises(UnsafeDecompressError, decomp, zlib.compress(genstring(strlen)), maxlen=strlen, maxmem=strlen-1)
+        # ### XXX self.assertRaises(UnsafeDecompressError, decomp, zlib.compress(genstring(strlen)), maxlen=strlen, maxmem=strlen-1)
         s = genstring(strlen)
         cs = zlibutil.zlib.compress(s)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
@@ -61,7 +61,7 @@ class ZlibTestCase(unittest.TestCase):
         self.failUnless(s == s2)
         s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen/2, zlibutil.MINMAXMEM))
         self.failUnless(s == s2)
-        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
+        self.assertRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
 
     def testem(self):
         # for strlen in [2**1, 2**2, 2**10, 2**14, 2**21]: # a *real* test ought to include 2**21, which exercises different cases re: maxmem.  But it takes too long.
