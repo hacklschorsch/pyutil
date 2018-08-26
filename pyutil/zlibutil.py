@@ -11,12 +11,16 @@ original data was maximally compressable, and a naive use of zlib would
 consume all of your RAM while trying to decompress it.
 """
 
-import exceptions, string, zlib
+import string, zlib
+try:
+    StandardError # PY2
+except NameError:
+    StandardError = Exception # PY3
 
 from .humanreadable import hr
 from .assertutil import precondition
 
-class DecompressError(exceptions.StandardError, zlib.error): pass
+class DecompressError(zlib.error, StandardError): pass
 class UnsafeDecompressError(DecompressError): pass # This means it would take more memory to decompress than we can spare.
 class TooBigError(DecompressError): pass # This means the resulting uncompressed text would exceed the maximum allowed length.
 class ZlibError(DecompressError): pass # internal error, probably due to the input not being zlib compressed text

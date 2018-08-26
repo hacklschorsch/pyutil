@@ -6,7 +6,11 @@
 from __future__ import print_function
 
 # from the Python Standard Library
-import exceptions, gc, math, operator, os, sys, types
+import gc, math, operator, os, sys, types
+try:
+    StandardError # PY2
+except NameError:
+    StandardError = Exception # PY3
 
 # from the pyutil library
 from .assertutil import precondition
@@ -197,7 +201,7 @@ def measure_ref_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
     sxx = reduce(operator.__add__, map(lambda a, avex=avex: (a - avex) ** 2, resiters))
     return sxy / sxx
 
-class NotSupportedException(exceptions.StandardError):
+class NotSupportedException(StandardError):
     """
     Just an exception class. It is thrown by get_mem_usage if the OS does
     not support the operation.
