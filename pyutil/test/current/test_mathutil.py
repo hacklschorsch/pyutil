@@ -130,7 +130,7 @@ class MathUtilTestCase(unittest.TestCase):
         f = mathutil.ave
         self.assertEqual(f([1,2,3]), 2)
         self.assertEqual(f([0,0,0,4]), 1)
-        self.failUnlessAlmostEqual(f([0.0, 1.0, 1.0]), .666666666666)
+        self.assertAlmostEqual(f([0.0, 1.0, 1.0]), .666666666666)
 
     def assertEqualContents(self, a, b):
         self.assertEqual(sorted(a), sorted(b))
