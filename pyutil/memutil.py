@@ -15,6 +15,7 @@ except NameError:
 # from the pyutil library
 from .assertutil import precondition
 from . import mathutil
+from . import dictutil
 
 class Canary:
     """
@@ -381,7 +382,6 @@ def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodT
         pass
     return ''.join(sl)
 
-import dictutil
 def describe_object_with_dict_details(o):
     sl = []
     sl.append(str(type(o)))
