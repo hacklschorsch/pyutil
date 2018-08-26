@@ -25,4 +25,4 @@ class T(unittest.TestCase):
         self.assertEqual(V('1.0a1.post987'), V('1.0a1-r987'))
         self.assertEqual(str(V('1.0a1.post999')), '1.0.0a1-r999')
         self.assertEqual(str(V('1.0a1-r999')), '1.0.0a1-r999')
-        self.failIfEqual(V('1.0a1'), V('1.0a1-r987'))
+        self.assertNotEqual(V('1.0a1'), V('1.0a1-r987'))
