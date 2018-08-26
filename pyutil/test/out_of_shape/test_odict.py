@@ -142,7 +142,7 @@ class Testy(unittest.TestCase):
         self.failUnless(d['spam'] == "eggs")
         self.failUnlessEqual(d.items(), [("spam", "eggs")])
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
+        self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
         self.failUnlessEqual(d.items(), [])
         d['spam'] = "eggsy"
@@ -161,7 +161,7 @@ class Testy(unittest.TestCase):
         self.failUnless(d['spam'] == "eggs")
         self.failUnlessEqual(d.items(), [("spam", "eggs")])
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
+        self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
         self.failUnlessEqual(d.items(), [])
 

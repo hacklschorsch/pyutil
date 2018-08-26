@@ -140,7 +140,7 @@ class Testy(unittest.TestCase):
         self.failUnless(d.get('spam') == "eggs")
         self.failUnless(d['spam'] == "eggs")
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
+        self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
         d['spam'] = "eggs"
         self.failUnless(d.has_key('spam'))
@@ -155,7 +155,7 @@ class Testy(unittest.TestCase):
         self.failUnless(d.get('spam') == "eggs")
         self.failUnless(d['spam'] == "eggs")
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
+        self.failUnless(x == "eggs", "x: %r" % x)
         self.failUnless(not d.has_key('spam'))
 
     def _test_extracted_bound_method(self, d):
