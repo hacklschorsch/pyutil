@@ -118,7 +118,7 @@ def decompress(zbuf, maxlen=(65 * (2**20)), maxmem=(65 * (2**20))):
         tmpstr = ''
 
     if len(decompstrlist) > 0:
-        return string.join(decompstrlist, '')
+        return b''.join(decompstrlist)
     else:
         return decompstrlist[0]
 

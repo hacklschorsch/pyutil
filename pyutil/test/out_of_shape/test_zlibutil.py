@@ -12,7 +12,7 @@ from pyutil import zlibutil
 
 class Accumulator:
     def __init__(self):
-        self.buf = ''
+        self.buf = b''
 
     def write(self, str):
         self.buf += str
@@ -28,7 +28,7 @@ def genrandstr(strlen):
     return randutil.insecurerandstr(strlen)
 
 def genbombstr(strlen):
-    return '0' * strlen
+    return b'0' * strlen
 
 MAXMEM=65*2**20
 
