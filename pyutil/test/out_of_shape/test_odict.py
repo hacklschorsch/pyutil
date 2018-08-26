@@ -365,7 +365,7 @@ class Testy(unittest.TestCase):
         self.failUnless(len(c) == 10)
         self.failUnless(1 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
         self.failUnless(2 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
-        self.failIf(10 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
+        self.assertFalse(10 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
         self.failUnless(99 in c.values())
 
     def _test_em(self):

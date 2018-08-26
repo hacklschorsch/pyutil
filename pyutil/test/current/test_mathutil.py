@@ -97,12 +97,12 @@ class MathUtilTestCase(unittest.TestCase):
             if i in (1, 2, 4, 8, 16, 32, 64):
                 self.failUnless(f(i, 2), "but %d *is* a power of 2" % i)
             else:
-                self.failIf(f(i, 2), "but %d is *not* a power of 2" % i)
+                self.assertFalse(f(i, 2), "but %d is *not* a power of 2" % i)
         for i in range(1, 100):
             if i in (1, 3, 9, 27, 81):
                 self.failUnless(f(i, 3), "but %d *is* a power of 3" % i)
             else:
-                self.failIf(f(i, 3), "but %d is *not* a power of 3" % i)
+                self.assertFalse(f(i, 3), "but %d is *not* a power of 3" % i)
 
     def test_next_power_of_k(self):
         f = mathutil.next_power_of_k
