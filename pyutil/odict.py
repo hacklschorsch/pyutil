@@ -36,14 +36,16 @@ class OrderedDict:
             self.i = c.d[c.ts][1]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.hs:
                 raise StopIteration()
             k = self.i
-            precondition(self.c.d.has_key(k), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
+            precondition(k in self.c.d, "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
             self.i = p
             return (k, v,)
+        def next(self):
+            return self.__next__()
 
     class KeyIterator:
         def __init__(self, c):
@@ -51,14 +53,16 @@ class OrderedDict:
             self.i = c.d[c.ts][1]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.hs:
                 raise StopIteration()
             k = self.i
-            precondition(self.c.d.has_key(k), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
+            precondition(k in self.c.d, "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
             self.i = p
             return k
+        def next(self):
+            return self.__next__()
 
     class ValIterator:
         def __init__(self, c):
@@ -66,13 +70,15 @@ class OrderedDict:
             self.i = c.d[c.ts][1]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.hs:
                 raise StopIteration()
-            precondition(self.c.d.has_key(self.i), "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
+            precondition(self.i in self.c.d, "The iterated OrderedDict doesn't have the next key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
             (v, p, n,) = self.c.d[self.i]
             self.i = p
             return v
+        def next(self):
+            return self.__next__()
 
     class Sentinel:
         def __init__(self, msg):
@@ -115,7 +121,7 @@ class OrderedDict:
         _assert((len(self.d) > 2) == (self.d[self.hs][2] is not self.ts) == (self.d[self.ts][1] is not self.hs), "Head and tail point to something other than each other if and only if there is at least one element in the dictionary.", self.hs, self.ts, len(self.d))
         foundprevsentinel = 0
         foundnextsentinel = 0
-        for (k, (v, p, n,)) in self.d.iteritems():
+        for (k, (v, p, n,)) in self.d.items():
             _assert(v not in (self.hs, self.ts,))
             _assert(p is not self.ts, "A reference to the tail sentinel may not appear in prev.", k, v, p, n)
             _assert(n is not self.hs, "A reference to the head sentinel may not appear in next.", k, v, p, n)
@@ -141,7 +147,7 @@ class OrderedDict:
     def move_to_most_recent(self, k, strictkey=False):
         assert self._assert_invariants()
 
-        if not self.d.has_key(k):
+        if k not in self.d:
             if strictkey:
                 raise KeyError(k)
             return
@@ -211,7 +217,7 @@ class OrderedDict:
             that key and strictkey is False
         """
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             node = self.d[key]
             # relink
             self.d[node[1]][2] = node[2]
@@ -228,12 +234,15 @@ class OrderedDict:
 
     def has_key(self, key):
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             assert self._assert_invariants()
             return True
         else:
             assert self._assert_invariants()
             return False
+
+    def __contains__(self, key):
+        return self.has_key(key)
 
     def clear(self):
         assert self._assert_invariants()
@@ -248,7 +257,7 @@ class OrderedDict:
         """
         assert self._assert_invariants()
 
-        for (k, v,) in otherdict.iteritems():
+        for (k, v,) in otherdict.items():
             assert self._assert_invariants()
             self[k] = v
             assert self._assert_invariants()
@@ -279,13 +288,17 @@ class OrderedDict:
         assert self._assert_invariants()
         return t.keys()
 
-    def keys(self):
-        res = [None] * len(self)
-        i = 0
-        for k in self.iterkeys():
-            res[i] = k
-            i += 1
-        return res
+    if hasattr(dict, 'iterkeys'): # PY2
+        def keys(self):
+            res = [None] * len(self)
+            i = 0
+            for k in self.iterkeys():
+                res[i] = k
+                i += 1
+            return res
+    else: # PY3
+        def keys(self):
+            return self.__iter__()
 
     def values_unsorted(self):
         assert self._assert_invariants()
@@ -295,21 +308,29 @@ class OrderedDict:
         assert self._assert_invariants()
         return map(operator.__getitem__, t.values(), [0]*len(t))
 
-    def values(self):
-        res = [None] * len(self)
-        i = 0
-        for v in self.itervalues():
-            res[i] = v
-            i += 1
-        return res
+    if hasattr(dict, 'itervalues'): # PY2
+        def values(self):
+            res = [None] * len(self)
+            i = 0
+            for v in self.itervalues():
+                res[i] = v
+                i += 1
+            return res
+    else: # PY3
+        def values(self):
+            return OrderedDict.ValIterator(self)
 
-    def items(self):
-        res = [None] * len(self)
-        i = 0
-        for it in self.iteritems():
-            res[i] = it
-            i += 1
-        return res
+    if hasattr(dict, 'iteritems'): # PY2
+        def items(self):
+            res = [None] * len(self)
+            i = 0
+            for it in self.iteritems():
+                res[i] = it
+                i += 1
+            return res
+    else: # PY3
+        def items(self):
+            return OrderedDict.ItemIterator(self)
 
     def __len__(self):
         return len(self.d) - 2
@@ -367,7 +388,7 @@ class SmallOrderedDict(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
             k = self.i
@@ -382,7 +403,7 @@ class SmallOrderedDict(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
             k = self.i
@@ -397,7 +418,7 @@ class SmallOrderedDict(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the OrderedDict while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
             k = self.i
@@ -416,7 +437,7 @@ class SmallOrderedDict(dict):
 
     def _assert_invariants(self):
         _assert(len(self._lru) <= self._maxsize, "Size is required to be <= maxsize.")
-        _assert(len(filter(lambda x: dict.has_key(self, x), self._lru)) == len(self._lru), "Each key in self._lru is required to be in dict.", filter(lambda x: not dict.has_key(self, x), self._lru), len(self._lru), self._lru, len(self), self)
+        _assert(len(filter(lambda x: dict.__contains__(self, x), self._lru)) == len(self._lru), "Each key in self._lru is required to be in dict.", filter(lambda x: dict.__contains__(self, x), self._lru), len(self._lru), self._lru, len(self), self)
         _assert(len(filter(lambda x: x in self._lru, self.keys())) == len(self), "Each key in dict is required to be in self._lru.", filter(lambda x: x not in self._lru, self.keys()), len(self._lru), self._lru, len(self), self)
         _assert(len(self._lru) == len(self), "internal consistency", filter(lambda x: x not in self.keys(), self._lru), len(self._lru), self._lru, len(self), self)
         _assert(len(self._lru) <= self._maxsize, "internal consistency", len(self._lru), self._lru, self._maxsize)
@@ -430,14 +451,14 @@ class SmallOrderedDict(dict):
 
     def setdefault(self, key, default=None):
         assert self._assert_invariants()
-        if not self.has_key(key):
+        if dict.__contains__(self, key):
             self[key] = default
         assert self._assert_invariants()
         return self[key]
 
     def __setitem__(self, key, item=None):
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             self._lru.remove(key)
         else:
             if len(self._lru) == self._maxsize:
@@ -467,7 +488,7 @@ class SmallOrderedDict(dict):
             that key and strictkey is False
         """
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             val = dict.__getitem__(self, key)
             dict.__delitem__(self, key)
             self._lru.remove(key)
@@ -510,7 +531,7 @@ class SmallOrderedDict(dict):
             return self
       
         for k in otherdict.iterkeys():
-            if dict.has_key(self, k):
+            if dict.__contains__(self, k):
                 self._lru.remove(k)
         self._lru.extend(otherdict.keys())
         dict.update(self, otherdict)
@@ -525,7 +546,7 @@ class SmallOrderedDict(dict):
 
     def has_key(self, key):
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             assert key in self._lru, "key: %s, self._lru: %s" % tuple(map(hr, (key, self._lru,)))
             self._lru.remove(key)
             self._lru.append(key)
@@ -535,12 +556,15 @@ class SmallOrderedDict(dict):
             assert self._assert_invariants()
             return False
 
+    def __contains__(self, key):
+        return self.has_key(key)
+
     def refresh(self, key, strictkey=True):
         """
         @param strictkey: raise a KeyError exception if key isn't present
         """
         assert self._assert_invariants()
-        if not dict.has_key(self, key):
+        if not dict.__contains__(self, key):
             if strictkey:
                 raise KeyError(key)
             return

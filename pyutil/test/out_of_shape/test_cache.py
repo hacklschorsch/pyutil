@@ -48,7 +48,7 @@ class Bencher:
         MAXSIZE=n/2
         d2 = self.klass(maxsize=MAXSIZE)
         assert len(d2) == 0
-        for k, v, in self.d.iteritems():
+        for k, v, in self.d.items():
             d2[k] = v
         assert len(d2) == min(len(self.d), MAXSIZE)
         return True
@@ -227,7 +227,7 @@ class Testy(unittest.TestCase):
         c = C({"a": 1})
         i = c.itervalues()
         x = i.next()
-        self.assertTrue(x == 1)
+        self.assertEqual(x, 1)
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -293,7 +293,7 @@ class Testy(unittest.TestCase):
     def _test_LRU_full(self, C):
         c = C(maxsize=10)
         c._assert_invariants()
-        for i in xrange(11):
+        for i in range(11):
             c._assert_invariants()
             c[i] = i
             c._assert_invariants()
@@ -325,7 +325,7 @@ class Testy(unittest.TestCase):
         self.assertTrue(1 not in c.values())
         self.assertTrue(11 in c.values())
 
-        for i in xrange(200):
+        for i in range(200):
             c[i] = i
             c._assert_invariants()
         self.assertTrue(199 in c.values())
@@ -334,7 +334,7 @@ class Testy(unittest.TestCase):
     def _test_LRU_has_key(self, C):
         c = C(maxsize=10)
         c._assert_invariants()
-        for i in xrange(11):
+        for i in range(11):
             c._assert_invariants()
             c[i] = i
             c._assert_invariants()
@@ -355,7 +355,7 @@ class Testy(unittest.TestCase):
 
     def _test_LRU_not_overfull_on_idempotent_add(self, C):
         c = C(maxsize=10)
-        for i in xrange(11):
+        for i in range(11):
             c[i] = i
         c[1] = "spam"
         # Now 1 is the freshest, so 2 is the next one that would be removed *if* we went over limit.

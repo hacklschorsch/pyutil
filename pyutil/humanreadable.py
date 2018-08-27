@@ -4,6 +4,7 @@
 #  This file is part of pyutil; see README.rst for licensing terms.
 
 import os
+import itertools
 
 try:
     from reprlib import Repr
@@ -100,7 +101,7 @@ class BetterRepr(Repr):
         if level <= 0: return '{...}'
         s = ''
         n = len(obj)
-        items = obj.items()[:min(n, self.maxdict)]
+        items = list(itertools.islice(obj.items(), self.maxdict))
         items.sort()
         for key, val in items:
             entry = self.repr1(key, level-1) + ':' + self.repr1(val, level-1)

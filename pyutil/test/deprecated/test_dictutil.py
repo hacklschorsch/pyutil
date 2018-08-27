@@ -36,13 +36,17 @@ class Testy(unittest.TestCase):
         d1 = klass()
         d2 = klass({})
 
-        self.assertTrue(d1 == d2, "d1: %r, d2: %r" % (d1, d2,))
+        self.assertTrue(d1 == d2, "klass: %s, d1: %r, d2: %r" % (klass, d1, d2,))
         self.assertTrue(len(d1) == 0)
         self.assertTrue(len(d2) == 0)
 
     def _help_test_nonempty_dict(self, klass):
-        d1 = klass({'a': 1, 'b': "eggs", 3: "spam",})
-        d2 = klass({'a': 1, 'b': "eggs", 3: "spam",})
+        # Python 2 allowed comparison between str and int,
+        # therefore mixing values of different types in ValueOrderedDict
+        # would work. It's now a TypeError in Python 3.
+        #d1 = klass({'a': 1, 'b': "eggs", 3: "spam",})
+        d1 = klass({'a': '1', 'b': "eggs", 3: "spam",})
+        d2 = klass({'a': '1', 'b': "eggs", 3: "spam",})
 
         self.assertTrue(d1 == d2)
         self.assertTrue(len(d1) == 3, "%s, %s" % (len(d1), d1,))
@@ -75,11 +79,11 @@ class Testy(unittest.TestCase):
         d[fake3] = fake7
         d[3] = 7
         d[3] = 8
-        _assert(filter(lambda x: x is 8,  d.itervalues()))
-        _assert(filter(lambda x: x is fake7,  d.itervalues()))
-        _assert(not filter(lambda x: x is 7,  d.itervalues())) # The real 7 should have been ejected by the d[3] = 8.
-        _assert(filter(lambda x: x is fake3,  d.iterkeys()))
-        _assert(filter(lambda x: x is 3,  d.iterkeys()))
+        _assert(any(x for x in d.values() if x is 8))
+        _assert(any(x for x in d.values() if x is fake7))
+        _assert(not any(x for x in d.values() if x is 7)) # The real 7 should have been ejected by the d[3] = 8.
+        _assert(any(x for x in d if x is fake3))
+        _assert(any(x for x in d if x is 3))
         d[fake3] = 8
 
         d.clear()
@@ -88,11 +92,11 @@ class Testy(unittest.TestCase):
         fake7 = EqButNotIs(7)
         d[fake3] = fake7
         d[3] = 8
-        _assert(filter(lambda x: x is 8,  d.itervalues()))
-        _assert(filter(lambda x: x is fake7,  d.itervalues()))
-        _assert(not filter(lambda x: x is 7,  d.itervalues())) # The real 7 should have been ejected by the d[3] = 8.
-        _assert(filter(lambda x: x is fake3,  d.iterkeys()))
-        _assert(filter(lambda x: x is 3,  d.iterkeys()))
+        _assert(any(x for x in d.values() if x is 8))
+        _assert(any(x for x in d.values() if x is fake7))
+        _assert(not any(x for x in d.values() if x is 7)) # The real 7 should have been ejected by the d[3] = 8.
+        _assert(any(x for x in d if x is fake3))
+        _assert(any(x for x in d if x is 3))
         d[fake3] = 8
 
     def test_em(self):
@@ -100,13 +104,7 @@ class Testy(unittest.TestCase):
             # print "name of class: ", klass
             for helper in (self._help_test_empty_dict, self._help_test_nonempty_dict, self._help_test_eq_but_notis,):
                 # print "name of test func: ", helper
-                try:
-                    helper(klass)
-                except:
-                    (etype, evalue, realtb) = sys.exc_info()
-                    traceback.print_exception(etype, evalue, realtb)
-                    self.fail(evalue)
-                    del realtb
+                helper(klass)
 
 def suite():
     suite = unittest.makeSuite(Testy, 'test')

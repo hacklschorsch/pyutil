@@ -42,14 +42,16 @@ class LRUCache:
             self.i = c.d[c.hs][2]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.ts:
                 raise StopIteration()
             k = self.i
-            precondition(self.c.d.has_key(k), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
+            precondition(k in self.c.d, "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
             self.i = n
             return (k, v,)
+        def next(self):
+            return self.__next__()
 
     class KeyIterator:
         def __init__(self, c):
@@ -57,14 +59,16 @@ class LRUCache:
             self.i = c.d[c.hs][2]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.ts:
                 raise StopIteration()
             k = self.i
-            precondition(self.c.d.has_key(k), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
+            precondition(k in self.c.d, "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", k, self.c)
             (v, p, n,) = self.c.d[k]
             self.i = n
             return k
+        def next(self):
+            return self.__next__()
 
     class ValIterator:
         def __init__(self, c):
@@ -72,13 +76,16 @@ class LRUCache:
             self.i = c.d[c.hs][2]
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             if self.i is self.c.ts:
                 raise StopIteration()
-            precondition(self.c.d.has_key(self.i), "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
+            precondition(self.i in self.c.d, "The iterated LRUCache doesn't have the next key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
             (v, p, n,) = self.c.d[self.i]
             self.i = n
             return v
+        def next(self):
+            return self.__next__()
+
 
     class Sentinel:
         def __init__(self, msg):
@@ -124,7 +131,7 @@ class LRUCache:
         _assert((len(self.d) > 2) == (self.d[self.hs][2] is not self.ts) == (self.d[self.ts][1] is not self.hs), "Head and tail point to something other than each other if and only if there is at least one element in the dictionary.", self.hs, self.ts, len(self.d))
         foundprevsentinel = 0
         foundnextsentinel = 0
-        for (k, (v, p, n,)) in self.d.iteritems():
+        for (k, (v, p, n,)) in self.d.items():
             _assert(v not in (self.hs, self.ts,))
             _assert(p is not self.ts, "A reference to the tail sentinel may not appear in prev.", k, v, p, n)
             _assert(n is not self.hs, "A reference to the head sentinel may not appear in next.", k, v, p, n)
@@ -150,7 +157,7 @@ class LRUCache:
     def freshen(self, k, strictkey=False):
         assert self._assert_invariants()
 
-        if not self.d.has_key(k):
+        if k not in self.d:
             if strictkey:
                 raise KeyError(k)
             return
@@ -227,7 +234,7 @@ class LRUCache:
             that key and strictkey is False
         """
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             node = self.d[key]
             # relink
             self.d[node[1]][2] = node[2]
@@ -244,7 +251,7 @@ class LRUCache:
 
     def has_key(self, key):
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             self.freshen(key)
             assert self._assert_invariants()
             return True
@@ -270,10 +277,10 @@ class LRUCache:
             self.clear()
             assert self._assert_invariants()
 
-            i = otherdict.iteritems()
+            i = iter(otherdict.items())
             try:
                 while len(self.d) < self.m:
-                    (k, v,) = i.next()
+                    (k, v,) = next(i)
                     assert self._assert_invariants()
                     self[k] = v
                     assert self._assert_invariants()
@@ -282,7 +289,7 @@ class LRUCache:
                 _assert(False, "Internal error -- this should never have happened since the while loop should have terminated first.")
                 return self
 
-        for (k, v,) in otherdict.iteritems():
+        for (k, v,) in otherdict.items():
             assert self._assert_invariants()
             self[k] = v
             assert self._assert_invariants()
@@ -401,10 +408,10 @@ class SmallLRUCache(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
-            k = self.i
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            k = self.c._lru[self.i]
             self.i += 1
             return (k, dict.__getitem__(self.c, k),)
 
@@ -416,10 +423,10 @@ class SmallLRUCache(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
-            k = self.i
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            k = self.c._lru[self.i]
             self.i += 1
             return k
 
@@ -431,27 +438,28 @@ class SmallLRUCache(dict):
             return self
         def next(self):
             precondition(self.i <= len(self.c._lru), "The iterated SmallLRUCache doesn't have this many elements.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c)
-            precondition(dict.has_key(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
             if self.i == len(self.c._lru):
                 raise StopIteration()
-            k = self.i
+            precondition(dict.__contains__(self.c, self.c._lru[self.i]), "The iterated SmallLRUCache doesn't have this key.  Most likely this is because someone altered the contents of the LRUCache while the iteration was in progress.", self.i, self.c._lru[self.i], self.c)
+            k = self.c._lru[self.i]
             self.i += 1
             return dict.__getitem__(self.c, k)
 
     def __init__(self, initialdata={}, maxsize=128):
         dict.__init__(self, initialdata)
-        self._lru = initialdata.keys() # contains keys
+        self._lru = list(initialdata.keys()) # contains keys
         self._maxsize = maxsize
         over = len(self) - self._maxsize
         if over > 0:
-            map(dict.__delitem__, [self]*over, self._lru[:over])
+            for k in self._lru[:over]:
+                dict.__delitem__(self, k)
             del self._lru[:over]
         assert self._assert_invariants()
 
     def _assert_invariants(self):
         _assert(len(self._lru) <= self._maxsize, "Size is required to be <= maxsize.")
-        _assert(len(filter(lambda x: dict.has_key(self, x), self._lru)) == len(self._lru), "Each key in self._lru is required to be in dict.", filter(lambda x: not dict.has_key(self, x), self._lru), len(self._lru), self._lru, len(self), self)
-        _assert(len(filter(lambda x: x in self._lru, self.keys())) == len(self), "Each key in dict is required to be in self._lru.", filter(lambda x: x not in self._lru, self.keys()), len(self._lru), self._lru, len(self), self)
+        _assert(len([x for x in self._lru if dict.__contains__(self, x)]) == len(self._lru), "Each key in self._lru is required to be in dict.", filter(lambda x: not dict.__contains__(self, x), self._lru), len(self._lru), self._lru, len(self), self)
+        _assert(len([x for x in self.keys() if x in self._lru]) == len(self), "Each key in dict is required to be in self._lru.", [x for x in self.keys() if x not in self._lru], len(self._lru), self._lru, len(self), self)
         _assert(len(self._lru) == len(self), "internal consistency", filter(lambda x: x not in self.keys(), self._lru), len(self._lru), self._lru, len(self), self)
         _assert(len(self._lru) <= self._maxsize, "internal consistency", len(self._lru), self._lru, self._maxsize)
         return True
@@ -471,7 +479,7 @@ class SmallLRUCache(dict):
 
     def __setitem__(self, key, item=None):
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             self._lru.remove(key)
         else:
             if len(self._lru) == self._maxsize:
@@ -501,7 +509,7 @@ class SmallLRUCache(dict):
             that key and strictkey is False
         """
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             val = dict.__getitem__(self, key)
             dict.__delitem__(self, key)
             self._lru.remove(key)
@@ -535,7 +543,7 @@ class SmallLRUCache(dict):
                 while len(self) > self._maxsize:
                     dict.popitem(self)
             else:
-                for k, v, in otherdict.iteritems():
+                for k, v, in otherdict.items():
                     if len(self) == self._maxsize:
                         break
                     dict.__setitem__(self, k, v)
@@ -543,8 +551,8 @@ class SmallLRUCache(dict):
             assert self._assert_invariants()
             return self
 
-        for k in otherdict.iterkeys():
-            if dict.has_key(self, k):
+        for k in otherdict:
+            if dict.__contains__(self, k):
                 self._lru.remove(k)
         self._lru.extend(otherdict.keys())
         dict.update(self, otherdict)
@@ -559,7 +567,7 @@ class SmallLRUCache(dict):
 
     def has_key(self, key):
         assert self._assert_invariants()
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             assert key in self._lru, "key: %s, self._lru: %s" % tuple(map(hr, (key, self._lru,)))
             self._lru.remove(key)
             self._lru.append(key)
@@ -574,7 +582,7 @@ class SmallLRUCache(dict):
         @param strictkey: raise a KeyError exception if key isn't present
         """
         assert self._assert_invariants()
-        if not dict.has_key(self, key):
+        if not dict.__contains__(self, key):
             if strictkey:
                 raise KeyError(key)
             return
@@ -587,6 +595,15 @@ class SmallLRUCache(dict):
         k = self._lru[-1]
         obj = self.remove(k)
         return (k, obj,)
+
+    def iteritems(self):
+        return SmallLRUCache.ItemIterator(self)
+
+    def iterkeys(self):
+        return SmallLRUCache.KeyIterator(self)
+
+    def itervalues(self):
+        return SmallLRUCache.ValueIterator(self)
 
 class LinkedListLRUCache:
     """
@@ -608,14 +625,14 @@ class LinkedListLRUCache:
         self.d = {}
         self.first = None
         self.last = None
-        for key, value in initialdata.iteritems():
+        for key, value in initialdata.items():
             self[key] = value
     def clear(self):
         self.d = {}
         self.first = None
         self.last = None
     def update(self, otherdict):
-        for (k, v,) in otherdict.iteritems():
+        for (k, v,) in otherdict.items():
             self[k] = v
     def setdefault(self, key, default=None):
         if not self.has_key(key):

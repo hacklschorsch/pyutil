@@ -122,7 +122,7 @@ class Testy(unittest.TestCase):
         self.assertTrue(d.get("spam2") == "eggs2")
         self.assertTrue(d["spam"] == "eggs")
         self.assertTrue(d["spam2"] == "eggs2")
-        self.assertEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")], d)
+        self.assertEqual(list(d.items()), [("spam", "eggs"), ("spam2", "eggs2")], d)
 
     def _test_move_to_most_recent(self, d) :
         d.insert("spam", "eggs")
@@ -133,37 +133,37 @@ class Testy(unittest.TestCase):
         self.assertTrue(d["spam2"] == "eggs2")
         self.assertEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")])
         d.move_to_most_recent("spam")
-        self.assertEqual(d.items(), [("spam2", "eggs2"), ("spam", "eggs")])
+        self.assertEqual(list(d.items()), [("spam2", "eggs2"), ("spam", "eggs")])
 
     def _test_insert_and_remove(self, d):
         d.insert('spam', "eggs")
         self.assertTrue(d.has_key('spam'))
         self.assertTrue(d.get('spam') == "eggs")
         self.assertTrue(d['spam'] == "eggs")
-        self.assertEqual(d.items(), [("spam", "eggs")])
+        self.assertEqual(list(d.items()), [("spam", "eggs")])
         x = d.remove('spam')
         self.assertTrue(x == "eggs", "x: %r" % x)
         self.assertTrue(not d.has_key('spam'))
-        self.assertEqual(d.items(), [])
+        self.assertEqual(list(d.items()), [])
         d['spam'] = "eggsy"
         self.assertTrue(d.has_key('spam'))
         self.assertTrue(d.get('spam') == "eggsy")
         self.assertTrue(d['spam'] == "eggsy")
-        self.assertEqual(d.items(), [("spam", "eggsy")])
+        self.assertEqual(list(d.items()), [("spam", "eggsy")])
         del d['spam']
         self.assertTrue(not d.has_key('spam'))
-        self.assertEqual(d.items(), [])
+        self.assertEqual(list(d.items()), [])
 
     def _test_setdefault(self, d):
         d.setdefault('spam', "eggs")
         self.assertTrue(d.has_key('spam'))
         self.assertTrue(d.get('spam') == "eggs")
         self.assertTrue(d['spam'] == "eggs")
-        self.assertEqual(d.items(), [("spam", "eggs")])
+        self.assertEqual(list(d.items()), [("spam", "eggs")])
         x = d.remove('spam')
         self.assertTrue(x == "eggs", "x: %r" % x)
         self.assertTrue(not d.has_key('spam'))
-        self.assertEqual(d.items(), [])
+        self.assertEqual(list(d.items()), [])
 
     def _test_extracted_bound_method(self, d):
         insmeth = d.insert
@@ -187,7 +187,7 @@ class Testy(unittest.TestCase):
         d.clear()
         d._assert_invariants()
         self.assertTrue(len(d) == 0)
-        self.assertEqual(d.items(), [])
+        self.assertEqual(list(d.items()), [])
 
     def _test_update_from_dict(self, d):
         self.assertTrue(d._assert_invariants())
@@ -219,7 +219,7 @@ class Testy(unittest.TestCase):
         self.assertTrue(d._assert_invariants())
         self.assertTrue(d.get('c') == 2)
         self.assertTrue(d._assert_invariants())
-        self.assertEqual(d.items(), [("b", 1), ("a", 0), ("c", 2)])
+        self.assertEqual(list(d.items()), [("b", 1), ("a", 0), ("c", 2)])
 
     def _test_popitem(self, C):
         c = C({"a": 1})
@@ -344,7 +344,7 @@ class Testy(unittest.TestCase):
     def _test_has_key(self, C):
         c = C()
         c._assert_invariants()
-        for i in xrange(11):
+        for i in range(11):
             c._assert_invariants()
             c[i] = i
             c._assert_invariants()
