@@ -10,7 +10,10 @@ them and lazily writing them to a file.
 
 # from the Python Standard Library
 import os
-import cPickle as pickle
+try:
+    import cPickle as pickle # PY2
+except ImportError:
+    import pickle # PY3
 import warnings
 
 # from the pyutil library
