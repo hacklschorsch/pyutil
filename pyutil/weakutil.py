@@ -7,19 +7,26 @@ import warnings
 
 # from the Python Standard Library
 from weakref import ref
+import types
 
 # from the pyutil library
 from .assertutil import precondition
+
+def is_bound_method(fn):
+    if hasattr(types, 'UnboundMethodType'): # PY2
+        return hasattr(fn, 'im_self')
+    else: # PY3
+        return isinstance(fn, types.MethodType)
 
 class WeakMethod:
     """ Wraps a function or, more importantly, a bound method, in
     a way that allows a bound method's object to be GC'd """
     def __init__(self, fn, callback=None):
         warnings.warn("deprecated", DeprecationWarning)
-        precondition(hasattr(fn, 'im_self'), "fn is required to be a bound method.")
+        precondition(is_bound_method(fn), "fn is required to be a bound method.")
         self._cleanupcallback = callback
-        self._obj = ref(fn.im_self, self.call_cleanup_cb)
-        self._meth = fn.im_func
+        self._obj = ref(fn.__self__, self.call_cleanup_cb)
+        self._meth = fn.__func__
 
     def __call__(self, *args, **kws):
         s = self._obj()
@@ -34,7 +41,7 @@ class WeakMethod:
             self._cleanupcallback(self, thedeadweakref)
 
 def factory_function_name_here(o):
-    if hasattr(o, 'im_self'):
+    if is_bound_method(o):
         return WeakMethod(o)
     else:
         return o
