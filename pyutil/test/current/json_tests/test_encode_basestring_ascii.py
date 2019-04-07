@@ -37,4 +37,4 @@ class TestEncodeBaseStringAscii(TestCase):
     def _test_encode_basestring_ascii(self, encode_basestring_ascii):
         for input_string, expect in CASES:
             result = encode_basestring_ascii(input_string)
-            self.assertEquals(result, expect)
+            self.assertEqual(result, expect)

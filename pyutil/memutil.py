@@ -6,11 +6,16 @@
 from __future__ import print_function
 
 # from the Python Standard Library
-import exceptions, gc, math, operator, os, sys, types
+import gc, math, operator, os, sys, types
+try:
+    StandardError # PY2
+except NameError:
+    StandardError = Exception # PY3
 
 # from the pyutil library
 from .assertutil import precondition
 from . import mathutil
+from . import dictutil
 
 class Canary:
     """
@@ -197,7 +202,7 @@ def measure_ref_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
     sxx = reduce(operator.__add__, map(lambda a, avex=avex: (a - avex) ** 2, resiters))
     return sxy / sxx
 
-class NotSupportedException(exceptions.StandardError):
+class NotSupportedException(StandardError):
     """
     Just an exception class. It is thrown by get_mem_usage if the OS does
     not support the operation.
@@ -351,7 +356,7 @@ def measure_mem_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
         return None
     return sxy / sxx
 
-def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodType, InstanceType=types.InstanceType):
+def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodType):
     """
     For human analysis, when humans are attempting to understand where all the
     memory is going.  Argument o is an object, return value is a string
@@ -368,11 +373,6 @@ def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodT
             sl.append("<type 'method' %s>" % str(o.im_func.func_name))
         except:
             pass
-    elif isinstance(o, InstanceType):
-        try:
-            sl.append("<type 'instance' %s>" % str(o.__class__.__name__))
-        except:
-            pass
     else:
         sl.append(str(type(o)))
 
@@ -382,7 +382,6 @@ def describe_object(o, FunctionType=types.FunctionType, MethodType=types.MethodT
         pass
     return ''.join(sl)
 
-import dictutil
 def describe_object_with_dict_details(o):
     sl = []
     sl.append(str(type(o)))

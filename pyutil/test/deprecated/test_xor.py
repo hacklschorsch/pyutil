@@ -10,11 +10,11 @@ from pyutil.xor import xor
 
 # unit tests
 def _help_test(xf):
-    assert xf('\000', '\000') == '\000'
-    assert xf('\001', '\000') == '\001'
-    assert xf('\001', '\001') == '\000'
-    assert xf('\000\001', '\000\001') == '\000\000'
-    assert xf('\100\101', '\000\101') == '\100\000'
+    assert xf(b'\000', b'\000') == b'\000'
+    assert xf(b'\001', b'\000') == b'\001'
+    assert xf(b'\001', b'\001') == b'\000'
+    assert xf(b'\000\001', b'\000\001') == b'\000\000'
+    assert xf(b'\100\101', b'\000\101') == b'\100\000'
 
 class Testy(unittest.TestCase):
     def test_em(self):

@@ -29,12 +29,15 @@ def py_xor(str1, str2):
         for i in range(len(a1)):
             a2[i] = a2[i]^a1[i]
     else:
-        a1 = array.array('c', str1)
-        a2 = array.array('c', str2)
+        a1 = array.array('b', str1)
+        a2 = array.array('b', str2)
         for i in range(len(a1)):
-            a2[i] = chr(ord(a2[i])^ord(a1[i]))
+            a2[i] = a2[i]^a1[i]
 
-    return a2.tostring()
+    if hasattr(a2, 'tobytes'): # PY3
+        return a2.tobytes()
+    else: # PY2
+        return a2.tostring()
 
 def py_xor_simple(str1, str2):
     """
@@ -44,7 +47,10 @@ def py_xor_simple(str1, str2):
     warnings.warn("deprecated", DeprecationWarning)
     precondition(len(str1) == len(str2), "str1 and str2 are required to be of the same length.", str1=str1, str2=str2)
 
-    return ''.join(map(chr, map(operator.__xor__, map(ord, str1), map(ord, str2))))
+    if bytes != str: # PY3
+        return bytes(map(operator.__xor__, str1, str2))
+    else: # PY2
+        return ''.join(map(chr, map(operator.__xor__, map(ord, str1), map(ord, str2))))
 
 # Now make "xor.xor()" be the best xor we've got:
 xor = py_xor

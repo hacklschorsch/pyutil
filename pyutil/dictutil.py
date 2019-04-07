@@ -68,7 +68,7 @@ class UtilDict:
         """
         @return a sequence of (key, value,) pairs sorted according to value
         """
-        l = [(x[1], x[0],) for x in self.d.iteritems()]
+        l = [(x[1], x[0],) for x in self.d.items()]
         l.sort()
         return [(x[1], x[0],) for x in l]
 
@@ -102,23 +102,23 @@ class UtilDict:
             except:
                 raise le
 
-    def __eq__(self, *args, **kwargs):
-        return self.d.__eq__(*args, **kwargs)
+    def __eq__(self, other):
+        return self.d == other
 
-    def __ne__(self, *args, **kwargs):
-        return self.d.__ne__(*args, **kwargs)
+    def __ne__(self, other):
+        return self.d != other
 
-    def __gt__(self, *args, **kwargs):
-        return self.d.__gt__(*args, **kwargs)
+    def __gt__(self, other):
+        return self.d > other
 
-    def __ge__(self, *args, **kwargs):
-        return self.d.__ge__(*args, **kwargs)
+    def __ge__(self, other):
+        return self.d >= other
 
-    def __le__(self, *args, **kwargs):
-        return self.d.__le__(*args, **kwargs)
+    def __le__(self, other):
+        return self.d < other
 
-    def __lt__(self, *args, **kwargs):
-        return self.d.__lt__(*args, **kwargs)
+    def __lt__(self, other):
+        return self.d <= other
 
     def __getitem__(self, *args, **kwargs):
         return self.d.__getitem__(*args, **kwargs)
@@ -145,19 +145,22 @@ class UtilDict:
         return self.d.get(key, default)
 
     def has_key(self, *args, **kwargs):
-        return self.d.has_key(*args, **kwargs)
+        return self.d.__contains__(*args, **kwargs)
 
     def items(self, *args, **kwargs):
         return self.d.items(*args, **kwargs)
 
-    def iteritems(self, *args, **kwargs):
-        return self.d.iteritems(*args, **kwargs)
+    if hasattr(dict, 'iteritems'): # PY2
+        def iteritems(self, *args, **kwargs):
+            return self.d.iteritems(*args, **kwargs)
 
-    def iterkeys(self, *args, **kwargs):
-        return self.d.iterkeys(*args, **kwargs)
+    if hasattr(dict, 'iterkeys'): # PY2
+        def iterkeys(self, *args, **kwargs):
+            return self.d.iterkeys(*args, **kwargs)
 
-    def itervalues(self, *args, **kwargs):
-        return self.d.itervalues(*args, **kwargs)
+    if hasattr(dict, 'itervalues'): # PY2
+        def itervalues(self, *args, **kwargs):
+            return self.d.itervalues(*args, **kwargs)
 
     def keys(self, *args, **kwargs):
         return self.d.keys(*args, **kwargs)
@@ -186,7 +189,7 @@ class NumDict:
         """
         Add all the values from otherdict into this dict.
         """
-        for key, val in otherdict.iteritems():
+        for key, val in otherdict.items():
             self.add_num(key, val)
 
     def add_num(self, key, val, default=0):
@@ -225,13 +228,13 @@ class NumDict:
         """
         @return a sequence of (key, value,) pairs sorted according to value
         """
-        l = [(x[1], x[0],) for x in self.d.iteritems()]
+        l = [(x[1], x[0],) for x in self.d.items()]
         l.sort()
         return [(x[1], x[0],) for x in l]
 
     def item_with_largest_value(self):
-        it = self.d.iteritems()
-        (winner, winnerval,) = it.next()
+        it = iter(self.d.items())
+        (winner, winnerval,) = next(it)
         try:
             while True:
                 n, nv = it.next()
@@ -272,23 +275,23 @@ class NumDict:
             except:
                 raise le
 
-    def __eq__(self, *args, **kwargs):
-        return self.d.__eq__(*args, **kwargs)
+    def __eq__(self, other):
+        return self.d == other
 
-    def __ne__(self, *args, **kwargs):
-        return self.d.__ne__(*args, **kwargs)
+    def __ne__(self, other):
+        return self.d != other
 
-    def __gt__(self, *args, **kwargs):
-        return self.d.__gt__(*args, **kwargs)
+    def __gt__(self, other):
+        return self.d > other
 
-    def __ge__(self, *args, **kwargs):
-        return self.d.__ge__(*args, **kwargs)
+    def __ge__(self, other):
+        return self.d >= other
 
-    def __le__(self, *args, **kwargs):
-        return self.d.__le__(*args, **kwargs)
+    def __le__(self, other):
+        return self.d < other
 
-    def __lt__(self, *args, **kwargs):
-        return self.d.__lt__(*args, **kwargs)
+    def __lt__(self, other):
+        return self.d <= other
 
     def __getitem__(self, *args, **kwargs):
         return self.d.__getitem__(*args, **kwargs)
@@ -315,19 +318,22 @@ class NumDict:
         return self.d.get(key, default)
 
     def has_key(self, *args, **kwargs):
-        return self.d.has_key(*args, **kwargs)
+        return self.d.__contains__(*args, **kwargs)
 
     def items(self, *args, **kwargs):
         return self.d.items(*args, **kwargs)
 
-    def iteritems(self, *args, **kwargs):
-        return self.d.iteritems(*args, **kwargs)
+    if hasattr(dict, 'iteritems'): # PY2
+        def iteritems(self, *args, **kwargs):
+            return self.d.iteritems(*args, **kwargs)
 
-    def iterkeys(self, *args, **kwargs):
-        return self.d.iterkeys(*args, **kwargs)
+    if hasattr(dict, 'iterkeys'): # PY2
+        def iterkeys(self, *args, **kwargs):
+            return self.d.iterkeys(*args, **kwargs)
 
-    def itervalues(self, *args, **kwargs):
-        return self.d.itervalues(*args, **kwargs)
+    if hasattr(dict, 'itervalues'): # PY2
+        def itervalues(self, *args, **kwargs):
+            return self.d.itervalues(*args, **kwargs)
 
     def keys(self, *args, **kwargs):
         return self.d.keys(*args, **kwargs)
@@ -348,7 +354,7 @@ class NumDict:
         return self.d.values(*args, **kwargs)
 
 def del_if_present(d, k):
-    if d.has_key(k):
+    if k in d:
         del d[k]
 
 class ValueOrderedDict:
@@ -371,14 +377,16 @@ class ValueOrderedDict:
             self.i = 0
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
+            precondition((self.i == len(self.c.l)) or self.c.l[self.i][1] in self.c.d, "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
                 raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return (le[1], le[0],)
+        def next(self):
+            return self.__next__()
 
     def iteritems(self):
         return ValueOrderedDict.ItemIterator(self)
@@ -398,16 +406,21 @@ class ValueOrderedDict:
             self.i = 0
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
+            precondition((self.i == len(self.c.l)) or self.c.l[self.i][1] in self.c.d, "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
                 raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return le[1]
+        def next(self):
+            return self.__next__()
 
     def iterkeys(self):
+        return ValueOrderedDict.KeyIterator(self)
+
+    def __iter__(self):
         return ValueOrderedDict.KeyIterator(self)
 
     class ValueIterator:
@@ -416,14 +429,16 @@ class ValueOrderedDict:
             self.i = 0
         def __iter__(self):
             return self
-        def next(self):
+        def __next__(self):
             precondition(self.i <= len(self.c.l), "The iterated ValueOrderedDict doesn't have this many elements.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, self.c)
-            precondition((self.i == len(self.c.l)) or self.c.d.has_key(self.c.l[self.i][1]), "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
+            precondition((self.i == len(self.c.l)) or self.c.l[self.i][1] in self.c.d, "The iterated ValueOrderedDict doesn't have this key.  Most likely this is because someone altered the contents of the ValueOrderedDict while the iteration was in progress.", self.i, (self.i < len(self.c.l)) and self.c.l[self.i], self.c)
             if self.i == len(self.c.l):
                 raise StopIteration()
             le = self.c.l[self.i]
             self.i += 1
             return le[0]
+        def next(self):
+            return self.__next__()
 
     def itervalues(self):
         return ValueOrderedDict.ValueIterator(self)
@@ -460,8 +475,8 @@ class ValueOrderedDict:
         return "<%s %s>" % (self.__class__.__name__, self.__repr_n__(16),)
 
     def __eq__(self, other):
-        for (k, v,) in other.iteritems():
-            if not self.d.has_key(k) or self.d[k] != v:
+        for (k, v,) in other.items():
+            if k not in self.d or self.d[k] != v:
                 return False
         return True
 
@@ -469,19 +484,19 @@ class ValueOrderedDict:
         return not self.__eq__(other)
 
     def _assert_invariants(self):
-        iter = self.l.__iter__()
+        it = iter(self.l)
         try:
-            oldx = iter.next()
+            oldx = next(it)
             while True:
-                x = iter.next()
+                x = next(it)
                 # self.l is required to be sorted
                 _assert(x >= oldx, x, oldx)
                 # every element of self.l is required to appear in self.d
-                _assert(self.d.has_key(x[1]), x)
+                _assert(x[1] in self.d, x)
                 oldx =x
         except StopIteration:
             pass
-        for (k, v,) in self.d.iteritems():
+        for (k, v,) in self.d.items():
             i = bisect_left(self.l, (v, k,))
             while (self.l[i][0] is not v) or (self.l[i][1] is not k):
                 i += 1
@@ -505,7 +520,7 @@ class ValueOrderedDict:
 
     def __setitem__(self, key, val=None):
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             oldval = self.d[key]
             if oldval != val:
                 # re-sort
@@ -534,7 +549,7 @@ class ValueOrderedDict:
         return result
 
     def __getitem__(self, key, default=None, strictkey=True):
-        if not self.d.has_key(key):
+        if key not in self.d:
             if strictkey:
                 raise KeyError(key)
             else:
@@ -553,7 +568,7 @@ class ValueOrderedDict:
             that key and strictkey is False
         """
         assert self._assert_invariants()
-        if self.d.has_key(key):
+        if key in self.d:
             val = self.d.pop(key)
             i = bisect_left(self.l, (val, key,))
             while (self.l[i][0] is not val) or (self.l[i][1] is not key):
@@ -579,14 +594,14 @@ class ValueOrderedDict:
         @return: self
         """
         assert self._assert_invariants()
-        for (k, v,) in otherdict.iteritems():
+        for (k, v,) in otherdict.items():
             self.insert(k, v)
         assert self._assert_invariants()
         return self
 
     def has_key(self, key):
         assert self._assert_invariants()
-        return self.d.has_key(key)
+        return key in self.d
 
     def popitem(self):
         if not self.l:
@@ -596,7 +611,7 @@ class ValueOrderedDict:
         return (le[1], le[0],)
 
     def pop(self, k, default=None, strictkey=False):
-        if not self.d.has_key(k):
+        if k in self.d:
             if strictkey:
                 raise KeyError(k)
             else:

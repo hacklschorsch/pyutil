@@ -11,12 +11,17 @@ original data was maximally compressable, and a naive use of zlib would
 consume all of your RAM while trying to decompress it.
 """
 
-import exceptions, string, zlib
+import string, zlib
+import numbers
+try:
+    StandardError # PY2
+except NameError:
+    StandardError = Exception # PY3
 
 from .humanreadable import hr
 from .assertutil import precondition
 
-class DecompressError(exceptions.StandardError, zlib.error): pass
+class DecompressError(zlib.error, StandardError): pass
 class UnsafeDecompressError(DecompressError): pass # This means it would take more memory to decompress than we can spare.
 class TooBigError(DecompressError): pass # This means the resulting uncompressed text would exceed the maximum allowed length.
 class ZlibError(DecompressError): pass # internal error, probably due to the input not being zlib compressed text
@@ -58,8 +63,8 @@ def decompress(zbuf, maxlen=(65 * (2**20)), maxmem=(65 * (2**20))):
         exceedingly large until you realize that it means you can decompress
         64 KB chunks of compressiontext at a bite.)
     """
-    assert isinstance(maxlen, (int, long,)) and maxlen > 0, "maxlen is required to be a real maxlen, geez!"
-    assert isinstance(maxmem, (int, long,)) and maxmem > 0, "maxmem is required to be a real maxmem, geez!"
+    assert isinstance(maxlen, numbers.Integral) and maxlen > 0, "maxlen is required to be a real maxlen, geez!"
+    assert isinstance(maxmem, numbers.Integral) and maxmem > 0, "maxmem is required to be a real maxmem, geez!"
     assert maxlen <= maxmem, "maxlen is required to be <= maxmem.  All data that is included in the return value is counted against maxmem as well as against maxlen, so it is impossible to return a result bigger than maxmem, even if maxlen is bigger than maxmem.  See decompress_to_spool() if you want to spool a large text out while limiting the amount of memory used during the process."
 
     lenzbuf = len(zbuf)
@@ -113,7 +118,7 @@ def decompress(zbuf, maxlen=(65 * (2**20)), maxmem=(65 * (2**20))):
         tmpstr = ''
 
     if len(decompstrlist) > 0:
-        return string.join(decompstrlist, '')
+        return b''.join(decompstrlist)
     else:
         return decompstrlist[0]
 
@@ -142,8 +147,8 @@ def decompress_to_fileobj(zbuf, fileobj, maxlen=(65 * (2**20)), maxmem=(65 * (2*
     @param fileobj a file object to which the decompressed text will be written
     """
     precondition(hasattr(fileobj, 'write') and callable(fileobj.write), "fileobj is required to have a write() method.", fileobj=fileobj)
-    precondition(isinstance(maxlen, (int, long,)) and maxlen > 0, "maxlen is required to be a real maxlen, geez!", maxlen=maxlen)
-    precondition(isinstance(maxmem, (int, long,)) and maxmem > 0, "maxmem is required to be a real maxmem, geez!", maxmem=maxmem)
+    precondition(isinstance(maxlen, numbers.Integral) and maxlen > 0, "maxlen is required to be a real maxlen, geez!", maxlen=maxlen)
+    precondition(isinstance(maxmem, numbers.Integral) and maxmem > 0, "maxmem is required to be a real maxmem, geez!", maxmem=maxmem)
     precondition(maxlen <= maxmem, "maxlen is required to be <= maxmem.  All data that is written out to fileobj is counted against maxmem as well as against maxlen, so it is impossible to return a result bigger than maxmem, even if maxlen is bigger than maxmem.  See decompress_to_spool() if you want to spool a large text out while limiting the amount of memory used during the process.", maxlen=maxlen, maxmem=maxmem)
 
     lenzbuf = len(zbuf)
@@ -216,8 +221,8 @@ def decompress_to_spool(zbuf, fileobj, maxlen=(65 * (2**20)), maxmem=(65 * (2**2
     @param fileobj the decompressed text will be written to it
     """
     precondition(hasattr(fileobj, 'write') and callable(fileobj.write), "fileobj is required to have a write() method.", fileobj=fileobj)
-    precondition(isinstance(maxlen, (int, long,)) and maxlen > 0, "maxlen is required to be a real maxlen, geez!", maxlen=maxlen)
-    precondition(isinstance(maxmem, (int, long,)) and maxmem > 0, "maxmem is required to be a real maxmem, geez!", maxmem=maxmem)
+    precondition(isinstance(maxlen, numbers.Integral) and maxlen > 0, "maxlen is required to be a real maxlen, geez!", maxlen=maxlen)
+    precondition(isinstance(maxmem, numbers.Integral) and maxmem > 0, "maxmem is required to be a real maxmem, geez!", maxmem=maxmem)
 
     tmpstr = ''
     lenzbuf = len(zbuf)

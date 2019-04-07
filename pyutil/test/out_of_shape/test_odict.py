@@ -105,7 +105,7 @@ SAMPLES = 2**5
 
 class Testy(unittest.TestCase):
     def _test_empty_lookup(self, d) :
-        self.failUnless(d.get('spam') is None)
+        self.assertTrue(d.get('spam') is None)
 
     def _test_key_error(self, C) :
         d = C()
@@ -118,139 +118,139 @@ class Testy(unittest.TestCase):
     def _test_insert_and_get_and_items(self, d) :
         d.insert("spam", "eggs")
         d["spam2"] = "eggs2"
-        self.failUnless(d.get("spam") == "eggs", str(d))
-        self.failUnless(d.get("spam2") == "eggs2")
-        self.failUnless(d["spam"] == "eggs")
-        self.failUnless(d["spam2"] == "eggs2")
-        self.failUnlessEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")], d)
+        self.assertTrue(d.get("spam") == "eggs", str(d))
+        self.assertTrue(d.get("spam2") == "eggs2")
+        self.assertTrue(d["spam"] == "eggs")
+        self.assertTrue(d["spam2"] == "eggs2")
+        self.assertEqual(list(d.items()), [("spam", "eggs"), ("spam2", "eggs2")], d)
 
     def _test_move_to_most_recent(self, d) :
         d.insert("spam", "eggs")
         d["spam2"] = "eggs2"
-        self.failUnless(d.get("spam") == "eggs", str(d))
-        self.failUnless(d.get("spam2") == "eggs2")
-        self.failUnless(d["spam"] == "eggs")
-        self.failUnless(d["spam2"] == "eggs2")
-        self.failUnlessEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")])
+        self.assertTrue(d.get("spam") == "eggs", str(d))
+        self.assertTrue(d.get("spam2") == "eggs2")
+        self.assertTrue(d["spam"] == "eggs")
+        self.assertTrue(d["spam2"] == "eggs2")
+        self.assertEqual(d.items(), [("spam", "eggs"), ("spam2", "eggs2")])
         d.move_to_most_recent("spam")
-        self.failUnlessEqual(d.items(), [("spam2", "eggs2"), ("spam", "eggs")])
+        self.assertEqual(list(d.items()), [("spam2", "eggs2"), ("spam", "eggs")])
 
     def _test_insert_and_remove(self, d):
         d.insert('spam', "eggs")
-        self.failUnless(d.has_key('spam'))
-        self.failUnless(d.get('spam') == "eggs")
-        self.failUnless(d['spam'] == "eggs")
-        self.failUnlessEqual(d.items(), [("spam", "eggs")])
+        self.assertTrue(d.has_key('spam'))
+        self.assertTrue(d.get('spam') == "eggs")
+        self.assertTrue(d['spam'] == "eggs")
+        self.assertEqual(list(d.items()), [("spam", "eggs")])
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
-        self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertTrue(x == "eggs", "x: %r" % x)
+        self.assertTrue(not d.has_key('spam'))
+        self.assertEqual(list(d.items()), [])
         d['spam'] = "eggsy"
-        self.failUnless(d.has_key('spam'))
-        self.failUnless(d.get('spam') == "eggsy")
-        self.failUnless(d['spam'] == "eggsy")
-        self.failUnlessEqual(d.items(), [("spam", "eggsy")])
+        self.assertTrue(d.has_key('spam'))
+        self.assertTrue(d.get('spam') == "eggsy")
+        self.assertTrue(d['spam'] == "eggsy")
+        self.assertEqual(list(d.items()), [("spam", "eggsy")])
         del d['spam']
-        self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertTrue(not d.has_key('spam'))
+        self.assertEqual(list(d.items()), [])
 
     def _test_setdefault(self, d):
         d.setdefault('spam', "eggs")
-        self.failUnless(d.has_key('spam'))
-        self.failUnless(d.get('spam') == "eggs")
-        self.failUnless(d['spam'] == "eggs")
-        self.failUnlessEqual(d.items(), [("spam", "eggs")])
+        self.assertTrue(d.has_key('spam'))
+        self.assertTrue(d.get('spam') == "eggs")
+        self.assertTrue(d['spam'] == "eggs")
+        self.assertEqual(list(d.items()), [("spam", "eggs")])
         x = d.remove('spam')
-        self.failUnless(x == "eggs", "x: %s" % `x`)
-        self.failUnless(not d.has_key('spam'))
-        self.failUnlessEqual(d.items(), [])
+        self.assertTrue(x == "eggs", "x: %r" % x)
+        self.assertTrue(not d.has_key('spam'))
+        self.assertEqual(list(d.items()), [])
 
     def _test_extracted_bound_method(self, d):
         insmeth = d.insert
         insmeth('spammy', "eggsy")
-        self.failUnless(d.get('spammy') == "eggsy")
+        self.assertTrue(d.get('spammy') == "eggsy")
 
     def _test_extracted_unbound_method(self, d):
         insumeth = d.__class__.insert
         insumeth(d, 'spammy', "eggsy")
-        self.failUnless(d.get('spammy') == "eggsy")
+        self.assertTrue(d.get('spammy') == "eggsy")
 
     def _test_unbound_method(self, C, d):
         umeth = C.insert
         umeth(d, 'spammy', "eggsy")
-        self.failUnless(d.get('spammy') == "eggsy")
+        self.assertTrue(d.get('spammy') == "eggsy")
 
     def _test_clear(self, d):
         d[11] = 11
         d._assert_invariants()
-        self.failUnless(len(d) == 1)
+        self.assertTrue(len(d) == 1)
         d.clear()
         d._assert_invariants()
-        self.failUnless(len(d) == 0)
-        self.failUnlessEqual(d.items(), [])
+        self.assertTrue(len(d) == 0)
+        self.assertEqual(list(d.items()), [])
 
     def _test_update_from_dict(self, d):
-        self.failUnless(d._assert_invariants())
+        self.assertTrue(d._assert_invariants())
         d['b'] = 99
-        self.failUnless(d._assert_invariants())
+        self.assertTrue(d._assert_invariants())
         d2={ 'a': 0, 'b': 1, 'c': 2,}
         d.update(d2)
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('a') == 0, "d.get('a'): %s" % d.get('a'))
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('b') == 1, "d.get('b'): %s" % d.get('b'))
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('c') == 2)
-        self.failUnless(d._assert_invariants())
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('a') == 0, "d.get('a'): %s" % d.get('a'))
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('b') == 1, "d.get('b'): %s" % d.get('b'))
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('c') == 2)
+        self.assertTrue(d._assert_invariants())
 
     def _test_update_from_odict(self, d):
-        self.failUnless(d._assert_invariants())
+        self.assertTrue(d._assert_invariants())
         d['b'] = 99
-        self.failUnless(d._assert_invariants())
+        self.assertTrue(d._assert_invariants())
         d2 = odict.OrderedDict()
         d2['a'] = 0
         d2['b'] = 1
         d2['c'] = 2
         d.update(d2)
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('a') == 0, "d.get('a'): %s" % d.get('a'))
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('b') == 1, "d.get('b'): %s" % d.get('b'))
-        self.failUnless(d._assert_invariants())
-        self.failUnless(d.get('c') == 2)
-        self.failUnless(d._assert_invariants())
-        self.failUnlessEqual(d.items(), [("b", 1), ("a", 0), ("c", 2)])
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('a') == 0, "d.get('a'): %s" % d.get('a'))
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('b') == 1, "d.get('b'): %s" % d.get('b'))
+        self.assertTrue(d._assert_invariants())
+        self.assertTrue(d.get('c') == 2)
+        self.assertTrue(d._assert_invariants())
+        self.assertEqual(list(d.items()), [("b", 1), ("a", 0), ("c", 2)])
 
     def _test_popitem(self, C):
         c = C({"a": 1})
         res = c.popitem()
-        self.failUnlessEqual(res, ("a", 1,))
+        self.assertEqual(res, ("a", 1,))
 
         c["a"] = 1
         c["b"] = 2
 
         res = c.popitem()
-        self.failUnlessEqual(res, ("b", 2,))
+        self.assertEqual(res, ("b", 2,))
 
     def _test_pop(self, C):
         c = C({"a": 1})
         res = c.pop()
-        self.failUnlessEqual(res, "a")
+        self.assertEqual(res, "a")
 
         c["a"] = 1
         c["b"] = 2
 
         res = c.pop()
-        self.failUnlessEqual(res, "b")
+        self.assertEqual(res, "b")
 
     def _test_iterate_items(self, C):
         c = C({"a": 1})
         c["b"] = 2
         i = c.iteritems()
         x = i.next()
-        self.failUnlessEqual(x, ("a", 1,))
+        self.assertEqual(x, ("a", 1,))
         x = i.next()
-        self.failUnlessEqual(x, ("b", 2,))
+        self.assertEqual(x, ("b", 2,))
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -262,9 +262,9 @@ class Testy(unittest.TestCase):
         c["b"] = 2
         i = c.iterkeys()
         x = i.next()
-        self.failUnlessEqual(x, "a")
+        self.assertEqual(x, "a")
         x = i.next()
-        self.failUnlessEqual(x, "b")
+        self.assertEqual(x, "b")
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -276,9 +276,9 @@ class Testy(unittest.TestCase):
         c["b"] = 2
         i = c.itervalues()
         x = i.next()
-        self.failUnless(x == 1)
+        self.assertTrue(x == 1)
         x = i.next()
-        self.failUnless(x == 2)
+        self.assertTrue(x == 2)
         try:
             i.next()
             self.fail() # Should have gotten StopIteration exception
@@ -294,7 +294,7 @@ class Testy(unittest.TestCase):
                 del c[k]
         for i in range(MUCHADDINGSIZE):
             c[i] = i
-        self.failUnlessEqual(len(c), MUCHADDINGSIZE)
+        self.assertEqual(len(c), MUCHADDINGSIZE)
 
     def _test_1(self, C):
         c = C()
@@ -344,29 +344,29 @@ class Testy(unittest.TestCase):
     def _test_has_key(self, C):
         c = C()
         c._assert_invariants()
-        for i in xrange(11):
+        for i in range(11):
             c._assert_invariants()
             c[i] = i
             c._assert_invariants()
         del c[0]
-        self.failUnless(len(c) == 10)
-        self.failUnless(10 in c.values())
-        self.failUnless(0 not in c.values())
+        self.assertTrue(len(c) == 10)
+        self.assertTrue(10 in c.values())
+        self.assertTrue(0 not in c.values())
 
         c.has_key(1) # this touches `1' but does not make it fresher so that it will get popped next time we pop.
         c[1] = 1 # this touches `1' but does not make it fresher so that it will get popped.
         c._assert_invariants()
 
         x = c.pop()
-        self.failUnlessEqual(x, 10)
+        self.assertEqual(x, 10)
 
         c[99] = 99
         c._assert_invariants()
-        self.failUnless(len(c) == 10)
-        self.failUnless(1 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
-        self.failUnless(2 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
-        self.failIf(10 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
-        self.failUnless(99 in c.values())
+        self.assertTrue(len(c) == 10)
+        self.assertTrue(1 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
+        self.assertTrue(2 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
+        self.assertFalse(10 in c.values(), "C: %s, c.values(): %s" % (hr(C), hr(c.values(),),))
+        self.assertTrue(99 in c.values())
 
     def _test_em(self):
         for klass in (odict.OrderedDict,):
@@ -402,7 +402,7 @@ class Testy(unittest.TestCase):
         memutil.measure_mem_leakage(self.test_em, max(2**3, SAMPLES/2**3), iterspersample=2**0)
         slope = memutil.measure_mem_leakage(self.test_em, max(2**3, SAMPLES/2**3), iterspersample=2**0)
 
-        self.failUnless(slope <= MIN_SLOPE, "%s leaks memory at a rate of approximately %s system bytes per invocation" % (self.test_em, "%0.3f" % slope,))
+        self.assertTrue(slope <= MIN_SLOPE, "%s leaks memory at a rate of approximately %s system bytes per invocation" % (self.test_em, "%0.3f" % slope,))
 
     def test_mem_leakage_much_adding_some_removing(self):
         try:
@@ -417,7 +417,7 @@ class Testy(unittest.TestCase):
         memutil.measure_mem_leakage(self._mem_test_much_adding_some_removing, SAMPLES, iterspersample=2**0)
         slope = memutil.measure_mem_leakage(self._mem_test_much_adding_some_removing, SAMPLES, iterspersample=2**0)
 
-        self.failUnless(slope <= MIN_SLOPE, "%s leaks memory at a rate of approximately %s system bytes per invocation" % (self._mem_test_much_adding_some_removing, "%0.3f" % slope,))
+        self.assertTrue(slope <= MIN_SLOPE, "%s leaks memory at a rate of approximately %s system bytes per invocation" % (self._mem_test_much_adding_some_removing, "%0.3f" % slope,))
 
     def test_obj_leakage(self):
         self._test_obj_leakage()
@@ -428,7 +428,7 @@ class Testy(unittest.TestCase):
         memutil.measure_obj_leakage(self.test_em, max(2**3, SAMPLES/2**3), iterspersample=2**0)
         slope = memutil.measure_obj_leakage(self.test_em, max(2**3, SAMPLES/2**3), iterspersample=2**0)
 
-        self.failUnless(slope <= MIN_SLOPE, "%s leaks objects at a rate of approximately %s system bytes per invocation" % (self.test_em, "%0.3f" % slope,))
+        self.assertTrue(slope <= MIN_SLOPE, "%s leaks objects at a rate of approximately %s system bytes per invocation" % (self.test_em, "%0.3f" % slope,))
 
     def test_obj_leakage_much_adding_some_removing(self):
         self._test_obj_leakage_much_adding_some_removing()
@@ -439,4 +439,4 @@ class Testy(unittest.TestCase):
         memutil.measure_obj_leakage(self._mem_test_much_adding_some_removing, SAMPLES, iterspersample=2**0)
         slope = memutil.measure_obj_leakage(self._mem_test_much_adding_some_removing, SAMPLES, iterspersample=2**0)
 
-        self.failUnless(slope <= MIN_SLOPE, "%s leaks objects at a rate of approximately %s system bytes per invocation" % (self._mem_test_much_adding_some_removing, "%0.3f" % slope,))
+        self.assertTrue(slope <= MIN_SLOPE, "%s leaks objects at a rate of approximately %s system bytes per invocation" % (self._mem_test_much_adding_some_removing, "%0.3f" % slope,))
