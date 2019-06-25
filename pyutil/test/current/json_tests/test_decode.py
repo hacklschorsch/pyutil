@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
+# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
 import decimal
 from unittest import TestCase

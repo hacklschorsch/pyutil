@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
+# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
 
 #  This file is part of pyutil; see README.rst for licensing terms.
