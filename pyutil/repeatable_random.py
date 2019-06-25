@@ -1,4 +1,4 @@
-# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
+# -*- coding: utf-8; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
 """
 If you execute force_repeatability() then the following things are changed in the runtime:
