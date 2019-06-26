@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8-with-signature-unix; fill-column: 77 -*-
+# -*- coding: utf-8; fill-column: 77 -*-
 # -*- indent-tabs-mode: nil -*-
 # Thanks to Daenyth for help porting this to Arch Linux.
 
