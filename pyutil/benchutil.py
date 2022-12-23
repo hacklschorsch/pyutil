@@ -178,7 +178,7 @@ def rep_bench(func, n, runtime=None, initfunc=None, runreps=None, runiters=10, p
     if best < (worstemptymeasure * MARGINOFERROR):
         raise BadMeasure("Apparently simply invoking an empty Python function can take as long as %0.10f seconds, and we were running reps for only about %0.10f seconds. So the measurement of the runtime of the code under benchmark is not reliable. Please pass a higher number for the 'runtime' argument to rep_bench().")
 
-    m = len(tls)/4
+    m = len(tls)//4
     if m > 0:
         mthbest = tls[m-1][0]
         mthworst = tls[-m][0]
