@@ -93,7 +93,7 @@ from __future__ import print_function
 
 import cProfile, operator, time
 from decimal import Decimal as D
-import thread
+import threading as thread
 
 #from pyutil import jsonutil as json
 
