@@ -183,7 +183,6 @@ the Simple Permissive Licence, version 1.
 .. _observer.py: pyutil/observer.py
 .. _increasing.py: pyutil/increasing.py
 .. _repeatable_random.py: pyutil/repeatable_random.py
-.. _strutil.py: pyutil/strutil.py
 .. _cache.py: pyutil/cache.py
 .. _odict.py: pyutil/odict.py
 .. _logutil.py: pyutil/logutil.py
