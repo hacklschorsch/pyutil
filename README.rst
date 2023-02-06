@@ -195,3 +195,4 @@ the Simple Permissive Licence, version 1.
 .. _dictutil.py: pyutil/dictutil.py
 .. _randutil.py: pyutil/randutil.py
 .. _xor.py: pyutil/xor/xor.py
+.. _verlib.py: pyutil/verlib.py
