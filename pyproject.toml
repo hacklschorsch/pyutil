@@ -2,11 +2,13 @@
 name = "pyutil"
 version = "3.3.3"
 authors = [
-  { name="tpltnt", email="tpltnt+pyutil@nkawtg.net" },
+  { name = "tpltnt", email = "tpltnt+pyutil@nkawtg.net" },
 ]
 description = "a collection of utilities for Python programmers"
 readme = "README.rst"
+license = { text = "GPL-2.0-or-later" }
 requires-python = ">=2.7"
+keywords = ["utilities", "twisted"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU General Public License (GPL)",
