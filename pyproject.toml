@@ -1,3 +1,41 @@
+[project]
+name = "pyutil"
+version = "3.3.2"
+authors = [
+  { name="tpltnt", email="tpltnt+pyutil@nkawtg.net" },
+]
+description = "a collection of utilities for Python programmers"
+readme = "README.rst"
+requires-python = ">=2.7"
+classifiers = [
+    u"Development Status :: 5 - Production/Stable",
+    u"License :: OSI Approved :: GNU General Public License (GPL)",
+    u"License :: DFSG approved",
+    u"Intended Audience :: Developers",
+    u"Operating System :: Microsoft :: Windows",
+    u"Operating System :: Unix",
+    u"Operating System :: MacOS :: MacOS X",
+    u"Operating System :: OS Independent",
+    u"Natural Language :: English",
+    u"Programming Language :: Python",
+    u"Programming Language :: Python :: 2",
+    u"Programming Language :: Python :: 2.7",
+    u"Programming Language :: Python :: 3",
+    u"Programming Language :: Python :: 3.5",
+    u"Programming Language :: Python :: 3.6",
+    u"Programming Language :: Python :: 3.7",
+    u"Programming Language :: Python :: 3.8",
+    u"Programming Language :: Python :: 3.9",
+    u"Programming Language :: Python :: 3.10",
+    u"Programming Language :: Python :: 3.11",
+    u"Topic :: Utilities",
+    u"Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tpltnt/pyutil"
+"Bug Tracker" = "https://github.com/tpltnt/pyutil/issues"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
