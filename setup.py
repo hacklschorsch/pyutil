@@ -29,6 +29,10 @@ trove_classifiers=[
     u"Programming Language :: Python :: 3.5",
     u"Programming Language :: Python :: 3.6",
     u"Programming Language :: Python :: 3.7",
+    u"Programming Language :: Python :: 3.8",
+    u"Programming Language :: Python :: 3.9",
+    u"Programming Language :: Python :: 3.10",
+    u"Programming Language :: Python :: 3.11",
     u"Topic :: Utilities",
     u"Topic :: Software Development :: Libraries",
     ]
