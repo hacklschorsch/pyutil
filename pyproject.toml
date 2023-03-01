@@ -1,10 +1,10 @@
 [project]
 name = "pyutil"
-version = "3.3.4"
 authors = [
   { name = "tpltnt", email = "tpltnt+pyutil@nkawtg.net" },
 ]
 description = "a collection of utilities for Python programmers"
+dynamic = ["version"]
 readme = "README.rst"
 license = { text = "GPL-2.0-or-later" }
 requires-python = ">=2.7"
