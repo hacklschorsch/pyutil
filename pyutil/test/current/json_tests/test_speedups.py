@@ -10,11 +10,11 @@ class TestSpeedups(TestCase):
         if not encoder.c_encode_basestring_ascii:
             raise SkipTest("no C extension speedups available to test")
         self.assertEqual(decoder.scanstring.__module__, "simplejson._speedups")
-        self.assert_(decoder.scanstring is decoder.c_scanstring)
+        self.assertIs(decoder.scanstring, decoder.c_scanstring)
 
     def test_encode_basestring_ascii(self):
         if not encoder.c_encode_basestring_ascii:
             raise SkipTest("no C extension speedups available to test")
         self.assertEqual(encoder.encode_basestring_ascii.__module__, "simplejson._speedups")
-        self.assert_(encoder.encode_basestring_ascii is
+        self.assertIs(encoder.encode_basestring_ascii,
                           encoder.c_encode_basestring_ascii)
